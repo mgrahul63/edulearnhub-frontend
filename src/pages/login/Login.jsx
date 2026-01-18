@@ -28,7 +28,6 @@ const Login = () => {
 
     try {
       const response = await loginAPI("login", formData);
-      console.log(response.data);
       if (response.data.success) {
         const user = response.data.user;
         localStorage.setItem("token", response.data.token);
