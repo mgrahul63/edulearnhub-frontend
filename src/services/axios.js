@@ -15,12 +15,13 @@ if (token) {
 customaxios.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
+    console.log("first");
     if (token) {
       config.headers.token = token;
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 // Response Interceptor (optional)
@@ -28,8 +29,9 @@ customaxios.interceptors.response.use(
   (response) => response,
   (error) => {
     console.error("Axios Error:", error.response?.data || error.message);
+    console.log("error");
     return Promise.reject(error);
-  }
+  },
 );
 
 export default customaxios;
