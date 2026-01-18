@@ -2,7 +2,7 @@ import axios from "axios";
 
 const customaxios = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL,
-  withCredentials: false,
+  withCredentials: true,
 });
 
 // Load token from localStorage (if exists)
@@ -15,7 +15,6 @@ if (token) {
 customaxios.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
-    console.log("first");
     if (token) {
       config.headers.token = token;
     }
@@ -29,7 +28,6 @@ customaxios.interceptors.response.use(
   (response) => response,
   (error) => {
     console.error("Axios Error:", error.response?.data || error.message);
-    console.log("error");
     return Promise.reject(error);
   },
 );
