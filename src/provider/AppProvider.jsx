@@ -5,13 +5,12 @@ import { dummyCourses } from "../assets/assets";
 import { AppContext } from "../context/AppContext";
 import { checkAuthAPI } from "../services/api/auth";
 
-const info = localStorage.getItem("user");
 const currency = import.meta.env.VITE_CURRENCY;
 
 export const AppContextProvider = (props) => {
   const navigate = useNavigate();
 
-  const [userinfo, setUserinfo] = useState(info ? JSON.parse(info) : null);
+  const [userinfo, setUserinfo] = useState();
 
   const [allCourses, setAllCourses] = useState([]);
   const [isEducator, setIsEducator] = useState(true);
@@ -54,7 +53,9 @@ export const AppContextProvider = (props) => {
   const calculateCourseDuration = (course) => {
     let time = 0;
     course.courseContent.map((chapter) =>
-      chapter.chapterContent.map((lecture) => (time += lecture.lectureDuration))
+      chapter.chapterContent.map(
+        (lecture) => (time += lecture.lectureDuration),
+      ),
     );
     return humanizeDuration(time * 60 * 1000, { units: ["h", "m"] });
   };
