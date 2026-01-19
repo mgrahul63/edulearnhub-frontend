@@ -2,7 +2,6 @@ import { FaCertificate, FaCheckCircle, FaVideo } from "react-icons/fa";
 
 const CourseDetailsCard = ({ courseInfo }) => {
   if (!courseInfo) return null;
-
   return (
     <div className="mx-auto bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
       {/* Header */}
@@ -130,7 +129,7 @@ const CourseDetailsCard = ({ courseInfo }) => {
                   ))}
                 </ul>
               </div>
-            )
+            ),
         )}
       </div>
     </div>

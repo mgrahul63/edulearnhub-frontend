@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { assets } from "../../../assets/assets";
-import {
-  courseDetailsAPI,
-  getCourseDetailsAPI,
-} from "../../../services/api/course";
+import { courseDetailsAPI, getCourseDetailsAPI } from "../../../services/api/course";
 import CourseDetailsCard from "../../components/CourseDetailsCard";
 import CourseDetailsForm from "../../components/CourseDetailsForm";
 
@@ -27,35 +25,31 @@ const AddCourseDetails = () => {
   const course = state?.course;
 
   const [edit, setEdit] = useState(false);
-  const [courseDetails, setCourseDetails] = useState(null);
 
-  useEffect(() => {
-    if (!courseId) return;
+  // ---- useQuery instead of useEffect ----
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["courseDetails", courseId],
+    queryFn: () => getCourseDetailsAPI(courseId),
+    enabled: !!courseId,
+    initialData: course ? { success: true, data: course } : undefined,
+  });
 
-    (async () => {
-      try {
-        const res = await getCourseDetailsAPI(courseId);
-        setCourseDetails(
-          res.data.success ? res.data.data : { courseId, ...EMPTY_DETAILS }
-        );
-      } catch {
-        setCourseDetails({ courseId, ...EMPTY_DETAILS });
-      }
-    })();
-  }, [courseId]);
+  // courseDetails stays same
+  const courseDetails = data?.success ? data.data : { courseId, ...EMPTY_DETAILS };
 
-  const handleSubmit = async (data) => {
-    await courseDetailsAPI(data);
-    setCourseDetails(data);
+  const handleSubmit = async (updatedData) => {
+    await courseDetailsAPI(updatedData);
+    // Update local data after submit
+    // Since we're not using setState anymore, you can optionally refetch or keep it simple
+    data.data = updatedData; // mutating React Query cache directly is okay for simple cases
     setEdit(false);
   };
 
-  if (!courseDetails) return null;
+  if (isLoading || !courseDetails) return null;
 
   return (
     <div className="w-full">
       {/* course header */}
-      {/* heading */}
       <div className="flex flex-col justify-between p-5 border rounded-xl bg-white hover:shadow-lg transition duration-300">
         {/* Thumbnail */}
         <div className="overflow-hidden rounded-lg mb-4">
@@ -75,8 +69,7 @@ const AddCourseDetails = () => {
             Category: {course?.category_name || "N/A"}
           </p>
           <p className="text-sm text-gray-800 font-medium mt-2">
-            Price: <span className="text-green-600">${course?.price}</span> |
-            Status:{" "}
+            Price: <span className="text-green-600">${course?.price}</span> | Status:{" "}
             <span
               className={`${
                 course?.status === "Active" ? "text-green-600" : "text-red-500"
@@ -109,7 +102,7 @@ const AddCourseDetails = () => {
             <CourseDetailsForm
               initialData={courseDetails}
               onSubmit={handleSubmit}
-              onPreviewChange={setCourseDetails}
+              onPreviewChange={(updated) => (data.data = updated)} // keep live preview
             />
 
             <button

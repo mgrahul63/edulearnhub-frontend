@@ -1,7 +1,7 @@
 // Dashboard.jsx
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { assets } from "../../assets/assets";
 import { useApp } from "../../hooks/useApp";
 import { getCoursesAPI } from "../../services/api/course";
 
@@ -15,21 +15,13 @@ const categoriesData = [
 
 const Dashboard = () => {
   const { userinfo } = useApp();
-  const [courses, setCourses] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
-  useEffect(() => {
-    const fetchCoureses = async () => {
-      const res = await getCoursesAPI();
-      setCourses(res.data.courses);
-    };
-    fetchCoureses();
-  }, [userinfo]);
 
-  const filteredCourses =
-    selectedCategory === "All"
-      ? courses
-      : courses.filter((course) => course.category === selectedCategory);
-
+  const { data, error, isPending, isLoading } = useQuery({
+    queryKey: ["courses", userinfo],
+    queryFn: getCoursesAPI,
+    enabled: !!userinfo,
+  });
   return (
     <div className="max-w-7xl mx-auto px-4 py-6">
       {/* Categories */}
@@ -65,17 +57,20 @@ const Dashboard = () => {
       {/* Courses Grid */}
       <div>
         <h2 className="text-2xl font-semibold mb-4">Courses</h2>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {filteredCourses?.length > 0 ? (
-            filteredCourses.map((course) => (
+          {isPending ? (
+            <p className="col-span-full text-center">Loading courses...</p>
+          ) : data?.success && data?.courses?.length > 0 ? (
+            data?.courses?.map((course) => (
               <Link
-                to={course?.id}
-                key={course?.id}
-                state={{course}}
+                to={course.id}
+                key={course.id}
+                state={{ course }}
                 className="bg-white rounded-lg shadow hover:shadow-lg transition p-4 flex flex-col"
               >
                 <img
-                  src={course?.thumbnail || assets.course_2_thumbnail}
+                  src={course.thumbnail || assets.course_2_thumbnail}
                   alt={course.title}
                   className="rounded w-full h-40 object-cover mb-4"
                 />

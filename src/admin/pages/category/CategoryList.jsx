@@ -1,19 +1,20 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useApp } from "../../../hooks/useApp";
 import { getCategoryAPI } from "../../../services/api/category";
 
 const CategoryList = ({ setFormData, onClick }) => {
   const { userinfo } = useApp();
-  const [categories, setCategories] = useState([]);
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const res = await getCategoryAPI();
-      if (res.data.success) setCategories(res.data.categories);
-    };
-    fetchCategories();
-  }, [userinfo]);
-
+  const {
+    data: categories,
+    error,
+    isLoading,
+  } = useQuery({
+    queryKey: ["admin-category", userinfo],
+    queryFn: getCategoryAPI,
+    enabled: !!userinfo,
+  });
+  console.log(categories);
   const handleEdit = (category) => {
     const { category_name, description } = category;
     setFormData({

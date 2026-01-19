@@ -1,24 +1,9 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useApp } from "../../../hooks/useApp";
 import { getCoursesAPI } from "../../../services/api/course";
 import CourseCard from "../../components/CourseCard";
-
 const CourseList = ({ setFormData, onEdit }) => {
   const { userinfo } = useApp();
-  const [courses, setCourses] = useState([]);
-
-  useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const res = await getCoursesAPI();
-        if (res.data.success) setCourses(res.data.courses);
-      } catch (error) {
-        console.error("Failed to fetch courses", error);
-      }
-    };
-
-    fetchCourses();
-  }, [userinfo]);
 
   const handleEdit = (course) => {
     setFormData({
@@ -29,17 +14,25 @@ const CourseList = ({ setFormData, onEdit }) => {
     onEdit?.(); // switch to form tab if needed
   };
 
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["courses", userinfo],
+    queryFn: getCoursesAPI,
+    enabled: !!userinfo,
+  });
+
   return (
     <div>
       <h2 className="text-2xl font-bold mb-6 text-gray-800">All Courses</h2>
 
-      {courses?.length ? (
+      {isLoading ? (
+        <p className="text-center">Loading courses...</p>
+      ) : data?.success && data?.courses?.length > 0 ? (
         <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {courses.map((course) => (
+          {data.courses.map((course) => (
             <CourseCard
               key={course.id}
               course={course}
-              OnEdit={() => handleEdit(course)}
+              onEdit={() => handleEdit(course)} // camelCase
             />
           ))}
         </div>
