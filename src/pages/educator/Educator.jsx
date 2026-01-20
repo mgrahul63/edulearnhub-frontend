@@ -3,14 +3,14 @@ import SideBar from "../../components/educator/SideBar";
 
 const Educator = () => {
   return (
-    <div className="block lg:flex min-h-screen">
-      {/* Sidebar: hidden on small, visible on large */}
-      <div className="hidden lg:block">
+    <div className="block md:flex min-h-screen">
+      {/* Sidebar: hidden on small, visible from md up */}
+      <div className="hidden md:block">
         <SideBar />
       </div>
 
       {/* Main content */}
-      <div className="w-full flex-1 lg:px-4">
+      <div className="w-full flex-1 px-1 md:px-6">
         <Outlet />
       </div>
     </div>

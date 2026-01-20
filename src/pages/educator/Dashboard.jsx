@@ -59,7 +59,7 @@ const Dashboard = () => {
       {/* Courses Grid */}
       <div>
         {/* <h2 className="text-2xl font-semibold mb-4">Courses</h2> */}
-        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {isPending ? (
             <p className="col-span-full text-center">Loading courses...</p>
           ) : data?.success && data?.courses?.length > 0 ? (

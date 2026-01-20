@@ -1,28 +1,6 @@
 import { NavLink } from "react-router-dom";
-import { assets } from "../../assets/assets";
 import { useApp } from "../../hooks/useApp";
-
-const MENUS = {
-  admin: [
-    { name: "Dashboard", path: "/admin/educator", icon: assets.home_icon },
-    { name: "Manage Users", path: "admin/users", icon: assets.user_icon },
-    {
-      name: "Manage Categories",
-      path: "admin/categories",
-      icon: assets.category_icon,
-    },
-    { name: "Manage Courses", path: "admin/courses", icon: assets.cross_icon },
-  ],
-  educator: [
-    { name: "Dashboard", path: "/educator", icon: assets.home_icon },
-    { name: "My Courses", path: "my-courses", icon: assets.my_course_icon },
-    {
-      name: "Student Enrolled",
-      path: "students-enrolled",
-      icon: assets.person_tick_icon,
-    },
-  ],
-};
+import { SIDEBARMENUS } from "../../utils/sidebar";
 
 const SideBar = () => {
   const { userinfo } = useApp();
@@ -30,7 +8,7 @@ const SideBar = () => {
 
   if (!isDesktop) return null;
 
-  const menuItems = MENUS[userinfo?.role] || MENUS.educator;
+  const menuItems = SIDEBARMENUS[userinfo?.role] || SIDEBARMENUS.educator;
 
   return (
     <div className="w-64 border-r min-h-screen text-base border-gray-500 py-2 flex flex-col">

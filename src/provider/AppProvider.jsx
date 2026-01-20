@@ -13,7 +13,6 @@ export const AppContextProvider = (props) => {
   const [userinfo, setUserinfo] = useState();
 
   const [allCourses, setAllCourses] = useState([]);
-  const [isEducator, setIsEducator] = useState(true);
   const [enrolledCourses, setEnrolledCourses] = useState([]);
 
   // Check if token is valid
@@ -91,8 +90,6 @@ export const AppContextProvider = (props) => {
     allCourses,
     navigate,
     calculateRating,
-    isEducator,
-    setIsEducator,
     calculateChapterTime,
     calculateCourseDuration,
     calculateNoOfLectures,

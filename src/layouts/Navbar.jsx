@@ -1,116 +1,129 @@
-import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { assets } from "../assets/assets";
+import LoginCreate from "../components/LoginCreate";
+import Logout from "../components/Logout";
 import { useApp } from "../hooks/useApp";
-import { logoutAPI } from "../services/api/auth";
+import { SIDEBARMENUS } from "../utils/sidebar";
 
 const Navbar = () => {
-  const { userinfo, setUserinfo, navigate, isEducator } = useApp();
+  const { userinfo, setUserinfo, navigate } = useApp();
   const { pathname } = useLocation();
   const isCourseList = pathname.includes("/course-list");
 
-  const handleLogout = async () => {
-    try {
-      await logoutAPI();
-      localStorage.removeItem("user");
-      localStorage.removeItem("token");
-      setUserinfo(null);
-      navigate("/login");
-    } catch (err) {
-      console.error("Logout error:", err);
-    }
-  };
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  const EducatorButton = ({ short }) => {
+  const sidebarMenu = SIDEBARMENUS[userinfo?.role] || SIDEBARMENUS.educator;
+
+  const EducatorButton = () => {
     if (!userinfo) return null;
 
-    return (
-      <>
-        <Link to={userinfo.role === "admin" ? "/admin/educator" : "/educator"}>
-          {isEducator
-            ? short
-              ? "Dashboard"
-              : "Educator Dashboard"
-            : short
-            ? "Educator"
-            : "Become Educator"}
-        </Link>
+    const navItemSideBar = sidebarMenu.map(({ name, path }) => (
+      <NavLink
+        key={name}
+        to={path}
+        onClick={() => setMenuOpen(false)}
+        className={({ isActive }) =>
+          `px-4 py-2 rounded hover:bg-gray-200 ${
+            isActive ? "bg-blue-500 text-white" : "text-gray-700"
+          }`
+        }
+      >
+        {name}
+      </NavLink>
+    ));
 
-        <Link
-          to={
-            userinfo.role === "admin"
-              ? "/admin/my-enrollments"
-              : "/my-enrollments"
-          }
-        >
-          {short ? "Enrollments" : "My Enrollments"}
-        </Link>
-      </>
+    const navItemTopBar = (
+      <NavLink
+        to={
+          userinfo.role === "admin"
+            ? "/admin/my-enrollments"
+            : "/my-enrollments"
+        }
+        onClick={() => setMenuOpen(false)}
+        className={({ isActive }) =>
+          `px-3 py-1 rounded hover:bg-gray-200 ${
+            isActive ? "bg-blue-500 text-white" : "text-gray-700"
+          }`
+        }
+      >
+        Enrollments
+      </NavLink>
     );
+
+    return { navItemSideBar, navItemTopBar };
   };
 
   return (
-    <div
-      className={`flex items-center justify-between
-  px-4 sm:px-10 md:px-14 lg:px-36 py-4 border-b border-gray-500
-  ${isCourseList ? "bg-white" : "bg-cyan-100/70"}`}
-    >
-      <img
-        src={assets.logo}
-        alt="Logo"
-        onClick={() => navigate("/")}
-        className="w-15 lg:w-15 cursor-pointer rounded-t-full"
-      />
+    <>
+      <nav
+        className={`w-full flex items-center justify-between
+        px-2 sm:px-2 md:px-14 lg:px-10 py-4 border-b border-gray-500
+        ${isCourseList ? "bg-white" : "bg-cyan-100/70"}`}
+      >
+        <img
+          src={assets.logo}
+          alt="Logo"
+          onClick={() => navigate("/")}
+          className="w-15 cursor-pointer rounded-t-full"
+        />
 
-      {/* Desktop */}
-      <div className="hidden md:flex items-center gap-5 text-gray-500">
-        <EducatorButton />
-        {userinfo ? (
-          <div className="flex items-center gap-3">
-            <span className="text-sm font-medium">{userinfo.name}</span>
-            <button
-              onClick={handleLogout}
-              className="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600"
-            >
-              Logout
-            </button>
-          </div>
-        ) : (
-          <div className="flex items-center gap-3">
-            <Link to="/login" className="text-blue-600 font-medium">
-              Login
-            </Link>
-            <Link
-              to="/signup"
-              className="bg-blue-600 text-white px-5 py-2 rounded-full"
-            >
-              Create Account
-            </Link>
-          </div>
-        )}
-      </div>
+        {/* Mobile menu button */}
+        <button
+          className="md:hidden text-2xl"
+          onClick={() => setMenuOpen(true)}
+        >
+          ☰
+        </button>
 
-      {/* Mobile */}
-      <div className="md:hidden flex items-center gap-3 text-gray-500">
-        <EducatorButton short />
-        {userinfo ? (
-          <div className="flex items-center gap-2">
-            <span className="text-xs max-w-[80px] truncate">
-              {userinfo.name}
-            </span>
+        {/* Desktop */}
+        <div className="hidden md:flex h-full items-center gap-5 text-gray-500">
+          {userinfo ? (
+            <>
+              <Link
+                to={userinfo.role === "admin" ? "/admin/educator" : "/educator"}
+                onClick={() => setMenuOpen(false)}
+                className="cursor-pointer"
+              >
+                {" "}
+                Dashboard
+              </Link>
+              {EducatorButton()?.navItemTopBar}
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-medium">{userinfo.name}</span>
+                <Logout setMenuOpen={setMenuOpen} />
+              </div>
+            </>
+          ) : (
+            <LoginCreate />
+          )}
+        </div>
+      </nav>
+
+      {/* Mobile Menu Overlay */}
+      {menuOpen && (
+        <div className="fixed inset-0 bg-black/40 z-40 md:hidden">
+          <div className="absolute top-0 right-0 w-50 bg-white z-50 p-6 flex flex-col gap-4 rounded-bl-xl">
             <button
-              onClick={handleLogout}
-              className="bg-red-500 text-white px-3 py-1 rounded-full text-xs"
+              className="self-end text-xl"
+              onClick={() => setMenuOpen(false)}
             >
-              Logout
+              ✕
             </button>
+
+            {userinfo ? (
+              <>
+                {EducatorButton()?.navItemSideBar}
+                {EducatorButton()?.navItemTopBar}
+                <Logout setMenuOpen={setMenuOpen} />
+              </>
+            ) : (
+              <LoginCreate onclick={() => setMenuOpen(false)} />
+            )}
           </div>
-        ) : (
-          <Link to="/login">
-            <img src={assets.user_icon} alt="User" />
-          </Link>
-        )}
-      </div>
-    </div>
+        </div>
+      )}
+    </>
   );
 };
 
