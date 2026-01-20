@@ -103,7 +103,7 @@ const Navbar = () => {
       {/* Mobile Menu Overlay */}
       {menuOpen && (
         <div className="fixed inset-0 bg-black/40 z-40 md:hidden">
-          <div className="absolute top-0 right-0 w-50 bg-white z-50 p-6 flex flex-col gap-4 rounded-bl-xl">
+          <div className="absolute top-0 right-0 w-50 bg-white z-50 p-3 flex flex-col gap-1 rounded-bl-xl">
             <button
               className="self-end text-xl"
               onClick={() => setMenuOpen(false)}
