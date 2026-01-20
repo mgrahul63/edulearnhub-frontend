@@ -18,6 +18,7 @@ import dropdown_icon from "./dropdown_icon.svg";
 import earning_icon from "./earning_icon.svg";
 import facebook_icon from "./facebook_icon.svg";
 import file_upload_icon from "./file_upload_icon.svg";
+import github_icon from "./github.svg";
 import home_icon from "./home_icon.svg";
 import instagram_icon from "./instagram_icon.svg";
 import lesson_icon from "./lesson_icon.svg";
@@ -45,8 +46,8 @@ import twitter_icon from "./twitter_icon.svg";
 import upload_area from "./upload_area.svg";
 import user_icon from "./user_icon.svg";
 import walmart_logo from "./walmart_logo.svg";
-
 export const assets = {
+  github_icon,
   category_icon,
   logo,
   search_icon,

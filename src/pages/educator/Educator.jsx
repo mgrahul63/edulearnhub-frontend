@@ -10,7 +10,7 @@ const Educator = () => {
       </div>
 
       {/* Main content */}
-      <div className="w-full flex-1 px-1 md:px-6">
+      <div className="w-full px-1 md:px-2">
         <Outlet />
       </div>
     </div>

@@ -1,52 +1,8 @@
-// import React from 'react'
-// import { assets } from '../../assets/assets'
-
-// const Footer = () => {
-//   return (
-//     <footer className='flex flex-col md:flex-row items-center justify-between w-full px-4 md:px-8 py-4 border-t border-gray-200 bg-white'>
-//       {/* Left section - Logo and Copyright */}
-//       <div className='flex items-center gap-4 mb-4 md:mb-0'>
-//         <img src={assets.logo} alt="logo" className='w-16 md:w-20' />
-//         <div className='hidden md:block h-6 w-px bg-gray-300'></div>
-//         <p className='text-xs md:text-sm text-gray-500 text-center md:text-left'>
-//           Copyright 2025 JKKNIU. All Rights Reserved.
-//         </p>
-//       </div>
-
-//       {/* Right section - Social Media Icons */}
-//       <div className='flex items-center gap-3'>
-//         <a
-//           href="#"
-//           className='hover:opacity-70 transition-opacity duration-200'
-//           aria-label="Facebook"
-//         >
-//           <img src={assets.facebook_icon} alt="facebook-icon" className='w-6 h-6' />
-//         </a>
-//         <a
-//           href="#"
-//           className='hover:opacity-70 transition-opacity duration-200'
-//           aria-label="Twitter"
-//         >
-//           <img src={assets.twitter_icon} alt="twitter_icon" className='w-6 h-6' />
-//         </a>
-//         <a
-//           href="#"
-//           className='hover:opacity-70 transition-opacity duration-200'
-//           aria-label="Instagram"
-//         >
-//           <img src={assets.instagram_icon} alt="instagram_icon" className='w-6 h-6' />
-//         </a>
-//       </div>
-//     </footer>
-//   )
-// }
-
-// export default Footer
 import { assets } from "../assets/assets";
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-gradient-to-b from-white to-gray-50 border-t border-gray-200 py-6 px-4 md:px-10">
+    <footer className="w-full bg-gray-100 border-t border-gray-200 py-6 px-4 md:px-10">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
         {/* Left Side */}
         <div className="flex items-center gap-4">
@@ -59,45 +15,59 @@ const Footer = () => {
           <div className="hidden md:block h-8 w-px bg-gray-300"></div>
 
           <p className="text-sm text-gray-600 font-light text-center md:text-left">
-            © 2025 JKKNIU — All Rights Reserved.
+            © 2024 JKKNIU — All Rights Reserved.
           </p>
         </div>
 
-        {/* Social Icons */}
-        <div className="flex items-center gap-4">
-          <a
-            href="#"
-            aria-label="Facebook"
-            className="hover:scale-110 transition-transform"
-          >
-            <img
-              src={assets.facebook_icon}
-              alt="facebook-icon"
-              className="w-6 h-6 opacity-80 hover:opacity-100"
-            />
-          </a>
-          <a
-            href="#"
-            aria-label="Twitter"
-            className="hover:scale-110 transition-transform"
-          >
-            <img
-              src={assets.twitter_icon}
-              alt="twitter-icon"
-              className="w-6 h-6 opacity-80 hover:opacity-100"
-            />
-          </a>
-          <a
-            href="#"
-            aria-label="Instagram"
-            className="hover:scale-110 transition-transform"
-          >
-            <img
-              src={assets.instagram_icon}
-              alt="instagram-icon"
-              className="w-6 h-6 opacity-80 hover:opacity-100"
-            />
-          </a>
+        {/* Right Side */}
+        <div className="flex flex-col md:flex-row items-center gap-4">
+          {/* Social Icons */}
+          <div className="flex items-center gap-4">
+            <a
+              href="https://web.facebook.com/mgrahul639/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+              className="hover:scale-110 transition-transform"
+            >
+              <img
+                src={assets.facebook_icon}
+                alt="facebook-icon"
+                className="w-6 h-6 opacity-80 hover:opacity-100"
+              />
+            </a>
+            <a
+              href="https://github.com/mgrahul63/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub"
+              className="hover:scale-110 transition-transform"
+            >
+              <img
+                src={assets.github_icon}
+                alt="github-icon"
+                className="w-6 h-6 opacity-80 hover:opacity-100"
+              />
+            </a>
+            <a
+              href="https://www.instagram.com/mgraful639/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              className="hover:scale-110 transition-transform"
+            >
+              <img
+                src={assets.instagram_icon}
+                alt="instagram-icon"
+                className="w-6 h-6 opacity-80 hover:opacity-100"
+              />
+            </a>
+          </div>
+
+          {/* Developed by text */}
+          <p className="text-xs text-gray-500 mt-2 md:mt-0 text-center md:text-right">
+            Developed by MG Rahul
+          </p>
         </div>
       </div>
     </footer>

@@ -34,7 +34,8 @@ const Signup = () => {
       }
     } catch (err) {
       setError(
-        err.response?.data?.message || "Something went wrong. Please try again."
+        err.response?.data?.message ||
+          "Something went wrong. Please try again.",
       );
     } finally {
       setLoading(false);
@@ -45,9 +46,9 @@ const Signup = () => {
     "w-full px-4 py-2 rounded-xl outline-none bg-white/80 text-gray-800 placeholder-gray-600 focus:ring-2";
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-purple-500 via-pink-500 to-blue-500 p-4">
-      <div className="bg-white/20 backdrop-blur-lg rounded-2xl shadow-xl w-full max-w-sm p-6 border border-white/30">
-        <h2 className="text-2xl font-bold text-center text-white mb-5">
+    <div className="flex items-center justify-center bg-blue-300  pb-55 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8 mt-15">
+        <h2 className="text-2xl font-bold text-center text-white mb-6">
           Create Your Account
         </h2>
 
@@ -57,7 +58,7 @@ const Signup = () => {
             value={formData.name}
             onChange={handleChange}
             placeholder="Your Name"
-            className={`${inputClass} focus:ring-purple-400`}
+            className={`${inputClass} focus:ring-purple-400 outline-none`}
             required
           />
 
@@ -67,7 +68,7 @@ const Signup = () => {
             value={formData.email}
             onChange={handleChange}
             placeholder="Your Email"
-            className={`${inputClass} focus:ring-pink-400`}
+            className={`${inputClass} focus:ring-pink-400 outline-none`}
             required
           />
 
@@ -77,7 +78,7 @@ const Signup = () => {
             value={formData.password}
             onChange={handleChange}
             placeholder="Create Password"
-            className={`${inputClass} focus:ring-blue-400`}
+            className={`${inputClass} focus:ring-blue-400 outline-none`}
             required
           />
 
@@ -89,7 +90,7 @@ const Signup = () => {
 
           <button
             disabled={loading}
-            className={`w-full py-2 rounded-xl font-semibold text-white transition-all ${
+            className={`w-full py-3 rounded-xl font-semibold text-white transition-all ${
               loading
                 ? "bg-gray-400 cursor-not-allowed"
                 : "bg-black hover:scale-[1.03] hover:bg-gray-900"
@@ -99,7 +100,7 @@ const Signup = () => {
           </button>
         </form>
 
-        <p className="text-center text-white text-sm mt-4">
+        <p className="text-center text-white text-sm mt-5">
           Already have an account?{" "}
           <span
             onClick={() => navigate("/login")}

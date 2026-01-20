@@ -1,5 +1,3 @@
-import axios from "axios";
-import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import AppLayout from "./components/AppLayout";
 import CourseDocs from "./pages/CourseDocs";
