@@ -5,6 +5,12 @@ import CourseCard from "../../components/CourseCard";
 const CourseList = ({ setFormData, onEdit }) => {
   const { userinfo } = useApp();
 
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["courses", userinfo],
+    queryFn: getCoursesAPI,
+    enabled: !!userinfo,
+  });
+
   const handleEdit = (course) => {
     setFormData({
       ...course,
@@ -13,12 +19,6 @@ const CourseList = ({ setFormData, onEdit }) => {
     });
     onEdit?.(); // switch to form tab if needed
   };
-
-  const { data, error, isLoading } = useQuery({
-    queryKey: ["courses", userinfo],
-    queryFn: getCoursesAPI,
-    enabled: !!userinfo,
-  });
 
   return (
     <div>
@@ -32,7 +32,7 @@ const CourseList = ({ setFormData, onEdit }) => {
             <CourseCard
               key={course.id}
               course={course}
-              onEdit={() => handleEdit(course)} // camelCase
+              OnEdit={() => handleEdit(course)} // camelCase
             />
           ))}
         </div>

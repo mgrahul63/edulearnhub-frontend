@@ -20,8 +20,7 @@ const AddminCourse = () => {
     status: "draft",
     method: "new",
     id: null,
-  });
-
+  }); 
   return (
     <div className="p-6">
       <div className="flex gap-4 border-b pb-3 mb-6">

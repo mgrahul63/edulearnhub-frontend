@@ -5,7 +5,7 @@ import truncateWords from "../../utils/truncateWords";
 const CourseCard = ({ course, OnEdit }) => {
   return (
     <div className="flex flex-col justify-between p-5 border rounded-xl bg-white hover:shadow-lg transition duration-300">
-      <Link to={`${course?.id}`} state={{course}}>
+      <Link to={`${course?.id}`} state={{ course }}>
         {/* Thumbnail */}
         <div className="overflow-hidden rounded-lg mb-4">
           <img
