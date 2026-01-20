@@ -10,7 +10,7 @@ const ViewCourseDetails = () => {
   const course = state?.course;
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["course-details", courseId],
+    queryKey: [`{course-details-${courseId}}`, courseId],
     queryFn: () => getCoursesDetailsAPI(courseId),
     enabled: !!courseId,
   });
@@ -18,9 +18,9 @@ const ViewCourseDetails = () => {
   const courseInfo = data?.success ? data.data : null;
 
   return (
-    <div className="w-full">
+    <div className="w-full mt-2 sm:mt-5">
       {/* heading */}
-      <div className="flex flex-col justify-between p-5 border rounded-xl bg-white hover:shadow-lg transition duration-300">
+      <div className="flex flex-col justify-between p-3 border rounded-xl bg-white hover:shadow-lg transition duration-300">
         {/* Thumbnail */}
         <div className="overflow-hidden rounded-lg mb-4">
           <img
@@ -54,7 +54,8 @@ const ViewCourseDetails = () => {
           </p>
         </div>
       </div>
-      <div className="mx-auto bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+
+      <div className=" my-2 mx-auto bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
         {isLoading && (
           <p className="text-center py-6">Loading course details...</p>
         )}

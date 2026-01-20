@@ -28,17 +28,6 @@ import Login from "./pages/login/Login";
 import Signup from "./pages/register/Signup";
 
 const App = () => {
-  const [data, setData] = useState(null);
-
-  const getData = async () => {
-    try {
-      const res = await axios.get("http://localhost:4000/");
-      setData(res.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   return (
     <Routes>
       <Route path="/" element={<AppLayout />}>
