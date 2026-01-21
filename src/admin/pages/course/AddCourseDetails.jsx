@@ -1,8 +1,11 @@
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
 import { assets } from "../../../assets/assets";
-import { courseDetailsAPI, getCourseDetailsAPI } from "../../../services/api/course";
+import {
+  courseDetailsAPI,
+  getCourseDetailsAPI,
+} from "../../../services/api/course";
 import CourseDetailsCard from "../../components/CourseDetailsCard";
 import CourseDetailsForm from "../../components/CourseDetailsForm";
 
@@ -35,7 +38,9 @@ const AddCourseDetails = () => {
   });
 
   // courseDetails stays same
-  const courseDetails = data?.success ? data.data : { courseId, ...EMPTY_DETAILS };
+  const courseDetails = data?.success
+    ? data.data
+    : { courseId, ...EMPTY_DETAILS };
 
   const handleSubmit = async (updatedData) => {
     await courseDetailsAPI(updatedData);
@@ -69,10 +74,13 @@ const AddCourseDetails = () => {
             Category: {course?.category_name || "N/A"}
           </p>
           <p className="text-sm text-gray-800 font-medium mt-2">
-            Price: <span className="text-green-600">${course?.price}</span> | Status:{" "}
+            Price: <span className="text-gray-950">${course?.price}</span> |
+            Status:{" "}
             <span
               className={`${
-                course?.status === "Active" ? "text-green-600" : "text-red-500"
+                course?.status === "published"
+                  ? "text-green-600"
+                  : "text-red-500"
               } font-semibold`}
             >
               {course?.status}

@@ -7,53 +7,58 @@ import { useApp } from "../hooks/useApp";
 import { SIDEBARMENUS } from "../utils/sidebar";
 
 const Navbar = () => {
-  const { userinfo, setUserinfo, navigate } = useApp();
+  const { userinfo } = useApp();
   const { pathname } = useLocation();
   const isCourseList = pathname.includes("/course-list");
 
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const sidebarMenu = SIDEBARMENUS[userinfo?.role] || SIDEBARMENUS.educator;
+  const sidebarMenu =
+    userinfo && SIDEBARMENUS[userinfo.role]
+      ? SIDEBARMENUS[userinfo.role]
+      : SIDEBARMENUS.educator;
 
-  const EducatorButton = () => {
-    if (!userinfo) return null;
+  // ---- Compute educator items ONCE ----
+  const educatorNav = userinfo
+    ? {
+        navItemSideBar: sidebarMenu.map(({ name, path }) => (
+          <NavLink
+            key={name}
+            to={path}
+            onClick={() => setMenuOpen(false)}
+            className={({ isActive }) =>
+              `px-4 py-2 rounded hover:bg-gray-200 ${
+                isActive ? "bg-blue-500 text-white" : "text-gray-700"
+              }`
+            }
+          >
+            {name}
+          </NavLink>
+        )),
 
-    const navItemSideBar = sidebarMenu.map(({ name, path }) => (
-      <NavLink
-        key={name}
-        to={path}
-        onClick={() => setMenuOpen(false)}
-        className={({ isActive }) =>
-          `px-4 py-2 rounded hover:bg-gray-200 ${
-            isActive ? "bg-blue-500 text-white" : "text-gray-700"
-          }`
-        }
-      >
-        {name}
-      </NavLink>
-    ));
+        navItemTopBar: (
+          <NavLink
+            to={
+              userinfo.role === "admin"
+                ? "/admin/my-enrollments"
+                : "/my-enrollments"
+            }
+            onClick={() => setMenuOpen(false)}
+            className={({ isActive }) =>
+              `px-3 py-1 rounded hover:bg-gray-200 ${
+                isActive ? "bg-blue-500 text-white" : "text-gray-700"
+              }`
+            }
+          >
+            Enrollments
+          </NavLink>
+        ),
+      }
+    : null;
 
-    const navItemTopBar = (
-      <NavLink
-        to={
-          userinfo.role === "admin"
-            ? "/admin/my-enrollments"
-            : "/my-enrollments"
-        }
-        onClick={() => setMenuOpen(false)}
-        className={({ isActive }) =>
-          `px-3 py-1 rounded hover:bg-gray-200 ${
-            isActive ? "bg-blue-500 text-white" : "text-gray-700"
-          }`
-        }
-      >
-        Enrollments
-      </NavLink>
-    );
-
-    return { navItemSideBar, navItemTopBar };
+  const handlCLick = () => {
+    window.location.href = "/";
   };
-
   return (
     <>
       <nav
@@ -64,7 +69,7 @@ const Navbar = () => {
         <img
           src={assets.logo}
           alt="Logo"
-          onClick={() => navigate("/")}
+          onClick={handlCLick}
           className="w-15 cursor-pointer rounded-t-full"
         />
 
@@ -78,29 +83,30 @@ const Navbar = () => {
 
         {/* Desktop */}
         <div className="hidden md:flex h-full items-center gap-5 text-gray-500">
-          {userinfo ? (
+          {!userinfo || !userinfo?.role ? (
+            <LoginCreate />
+          ) : (
             <>
               <Link
                 to={userinfo.role === "admin" ? "/admin/educator" : "/educator"}
                 onClick={() => setMenuOpen(false)}
                 className="cursor-pointer"
               >
-                {" "}
                 Dashboard
               </Link>
-              {EducatorButton()?.navItemTopBar}
+
+              {educatorNav?.navItemTopBar}
+
               <div className="flex items-center gap-3">
-                <span className="text-sm font-medium">{userinfo.name}</span>
+                <span className="text-sm font-medium">{userinfo?.name}</span>
                 <Logout setMenuOpen={setMenuOpen} />
               </div>
             </>
-          ) : (
-            <LoginCreate />
           )}
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu */}
       {menuOpen && (
         <div className="fixed inset-0 bg-black/40 z-40 md:hidden">
           <div className="absolute top-0 right-0 w-50 bg-white z-50 p-3 flex flex-col gap-1 rounded-bl-xl divide-y divide-gray-300">
@@ -113,8 +119,8 @@ const Navbar = () => {
 
             {userinfo ? (
               <>
-                {EducatorButton()?.navItemSideBar}
-                {EducatorButton()?.navItemTopBar}
+                {educatorNav?.navItemSideBar}
+                {educatorNav?.navItemTopBar}
                 <Logout setMenuOpen={setMenuOpen} />
               </>
             ) : (

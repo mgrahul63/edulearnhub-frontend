@@ -1,20 +1,18 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { useApp } from "../../../hooks/useApp";
 import { getCategoryAPI } from "../../../services/api/category";
 import { addCourseAPI } from "../../../services/api/course";
 
 const AddCourse = ({ formData, setFormData, onSuccess }) => {
   const { userinfo } = useApp();
-  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(null);
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const res = await getCategoryAPI();
-      if (res.data.success) setCategories(res.data.categories);
-    };
-    fetchCategories();
-  }, [userinfo]);
+  const { data: categories } = useQuery({
+    queryKey: ["category", userinfo],
+    queryFn: getCategoryAPI,
+    enabled: !!userinfo,
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -206,8 +204,8 @@ const AddCourse = ({ formData, setFormData, onSuccess }) => {
             {loading
               ? "Uploading... Please wait"
               : formData.method === "edit"
-              ? "Update Course"
-              : "Add Course"}
+                ? "Update Course"
+                : "Add Course"}
           </button>
 
           {formData.method === "edit" && (

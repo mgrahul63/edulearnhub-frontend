@@ -5,13 +5,22 @@ export const courseAPI = (state) => customaxios.get(`/api/auth/${state}`);
 export const addCourseAPI = (data) =>
   customaxios.post("/api/admin/add-course", data);
 
-export const getCoursesAPI = async () => {
+// services/api/course.js
+export const getCoursesAPI = async ({
+  page = 1,
+  limit = 15,
+  categoryId = "all",
+  status = null,
+}) => {
   try {
-    const res = await customaxios.get("/api/admin/get-course");
-    return res.data;
+    const query = new URLSearchParams({ page, limit, categoryId, status });
+
+    const res = await customaxios.get(
+      `/api/admin/get-course?${query.toString()}`,
+    );
+    return res.data; // { success: true, courses: [...] }
   } catch (error) {
     console.error("Get courses failed:", error);
-    throw error; // important: let React Query handle it
   }
 };
 

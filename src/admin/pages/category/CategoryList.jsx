@@ -14,7 +14,7 @@ const CategoryList = ({ setFormData, onClick }) => {
     queryFn: getCategoryAPI,
     enabled: !!userinfo,
   });
-  console.log(categories);
+
   const handleEdit = (category) => {
     const { category_name, description } = category;
     setFormData({

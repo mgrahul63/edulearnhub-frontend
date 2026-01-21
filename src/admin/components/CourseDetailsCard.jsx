@@ -4,13 +4,7 @@ const CourseDetailsCard = ({ courseInfo }) => {
   if (!courseInfo) return null;
   return (
     <div className="mx-auto bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-      {/* Header */}
-      {/* <div className="p-6 border-b border-gray-200">
-        <h2 className="text-3xl font-bold text-gray-800">
-          {courseInfo.title || "Course Preview"}
-        </h2>
-        <p className="text-gray-500 mt-1">{courseInfo.subtitle || ""}</p>
-      </div> */}
+    
 
       <div className="p-6 space-y-6">
         {/* Full Description */}

@@ -3,6 +3,7 @@ import { FaCertificate, FaCheckCircle, FaVideo } from "react-icons/fa";
 import { useLocation, useParams } from "react-router-dom";
 import { assets } from "../../assets/assets";
 import { getCoursesDetailsAPI } from "../../services/api/course";
+import ScrollToTop from "../ScrollToTop";
 
 const ViewCourseDetails = () => {
   const { courseId } = useParams();
@@ -16,9 +17,9 @@ const ViewCourseDetails = () => {
   });
 
   const courseInfo = data?.success ? data.data : null;
-
   return (
     <div className="w-full mt-2 sm:mt-5">
+      <ScrollToTop />
       {/* heading */}
       <div className="flex flex-col justify-between p-3 border rounded-xl bg-white hover:shadow-lg transition duration-300">
         {/* Thumbnail */}
@@ -39,15 +40,7 @@ const ViewCourseDetails = () => {
             Category: {course?.category_name || "N/A"}
           </p>
           <p className="text-sm text-gray-800 font-medium mt-2">
-            Price: <span className="text-green-600">${course?.price}</span> |
-            Status:{" "}
-            <span
-              className={`${
-                course?.status === "Active" ? "text-green-600" : "text-red-500"
-              } font-semibold`}
-            >
-              {course?.status}
-            </span>
+            Price: <span className="text-gray-950">${course?.price}</span>
           </p>
           <p className="text-sm text-gray-500 mb-2 line-clamp-2">
             {course?.description}

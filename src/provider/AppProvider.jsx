@@ -1,6 +1,5 @@
 import humanizeDuration from "humanize-duration";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { dummyCourses } from "../assets/assets";
 import { AppContext } from "../context/AppContext";
 import { checkAuthAPI } from "../services/api/auth";
@@ -8,9 +7,7 @@ import { checkAuthAPI } from "../services/api/auth";
 const currency = import.meta.env.VITE_CURRENCY;
 
 export const AppContextProvider = (props) => {
-  const navigate = useNavigate();
-
-  const [userinfo, setUserinfo] = useState();
+  const [userinfo, setUserinfo] = useState(null);
 
   const [allCourses, setAllCourses] = useState([]);
   const [enrolledCourses, setEnrolledCourses] = useState([]);
@@ -88,7 +85,6 @@ export const AppContextProvider = (props) => {
     setUserinfo,
     currency,
     allCourses,
-    navigate,
     calculateRating,
     calculateChapterTime,
     calculateCourseDuration,
