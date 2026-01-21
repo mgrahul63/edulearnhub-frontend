@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useApp } from "../../../hooks/useApp";
 import AddCourse from "./AddCourse";
 import CourseList from "./CourseList";
 
@@ -8,15 +9,16 @@ const TABS = [
 ];
 
 const AddminCourse = () => {
+  const { userinfo } = useApp();
   const [activeTab, setActiveTab] = useState("list");
 
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     categoryId: "",
-    instructorId: "",
+    instructorId: userinfo?.id || "",
     price: 0,
-    image: null, // 🔥 file object যাবে এখানে
+    image: null,
     status: "draft",
     method: "new",
     id: null,

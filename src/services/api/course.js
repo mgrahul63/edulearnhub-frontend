@@ -11,9 +11,10 @@ export const getCoursesAPI = async ({
   limit = 15,
   categoryId = "all",
   status = null,
+  instructorId = null,
 }) => {
   try {
-    const query = new URLSearchParams({ page, limit, categoryId, status });
+    const query = new URLSearchParams({ page, limit, categoryId, status, instructorId });
 
     const res = await customaxios.get(
       `/api/admin/get-course?${query.toString()}`,

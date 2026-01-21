@@ -30,6 +30,8 @@ const CourseList = ({ setFormData, onEdit }) => {
         page: pageParam,
         limit: 10,
         categoryId: selectedCategory,
+        status: null,
+        instructorId: userinfo?.id,
       }),
     enabled: !!userinfo,
     getNextPageParam: (lastPage, pages) =>
@@ -80,7 +82,7 @@ const CourseList = ({ setFormData, onEdit }) => {
 
           {categoriesData?.map((category) => (
             <button
-              key={category}
+              key={category.id}
               onClick={() => setSelectedCategory(category?.id)}
               className={`px-4 py-2 text-sm sm:text-base rounded-full whitespace-nowrap cursor-pointer ${
                 selectedCategory === category

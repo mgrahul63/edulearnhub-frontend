@@ -31,13 +31,13 @@ const Dashboard = () => {
     queryFn: ({ pageParam = 1 }) =>
       getCoursesAPI({
         page: pageParam,
-        limit: 15,
+        limit: 10,
         categoryId: selectedCategory,
         status: "published",
       }),
     enabled: !!userinfo,
     getNextPageParam: (lastPage, pages) => {
-      if (!lastPage.courses || lastPage.courses.length < 15) return undefined;
+      if (!lastPage.courses || lastPage.courses?.length < 10) return undefined;
       return pages.length + 1;
     },
   });
