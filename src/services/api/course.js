@@ -14,7 +14,13 @@ export const getCoursesAPI = async ({
   instructorId = null,
 }) => {
   try {
-    const query = new URLSearchParams({ page, limit, categoryId, status, instructorId });
+    const query = new URLSearchParams({
+      page,
+      limit,
+      categoryId,
+      status,
+      instructorId,
+    });
 
     const res = await customaxios.get(
       `/api/admin/get-course?${query.toString()}`,
@@ -22,6 +28,18 @@ export const getCoursesAPI = async ({
     return res.data; // { success: true, courses: [...] }
   } catch (error) {
     console.error("Get courses failed:", error);
+  }
+};
+
+export const deleteCourseAPI = async (courseId, instructorId) => {
+  try {
+    const res = await customaxios.delete("/api/admin/delete-course", {
+      data: { courseId, instructorId },
+    });
+    return res.data;
+  } catch (error) {
+    console.error("Delete course failed:", error);
+    throw error;
   }
 };
 

@@ -1,6 +1,7 @@
+import { toast } from "react-toastify";
 import { addCategoryAPI } from "../../../services/api/category";
 
-const AddCategory = ({ formData, setFormData, onSuccess }) => {
+const AddCategory = ({ formData, setFormData }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -30,10 +31,10 @@ const AddCategory = ({ formData, setFormData, onSuccess }) => {
       const res = await addCategoryAPI(payload);
 
       if (res.data.success) {
-        alert(
-          formData.method === "edit"
+        toast.success(
+          res.data.message || formData.method === "edit"
             ? "Category updated successfully"
-            : "Category added successfully"
+            : "Category added successfully",
         );
 
         // Reset form
@@ -43,9 +44,6 @@ const AddCategory = ({ formData, setFormData, onSuccess }) => {
           method: "new",
           id: null,
         });
-
-        // optional callback to refresh list
-        onSuccess?.();
       }
     } catch (error) {
       console.error(error);

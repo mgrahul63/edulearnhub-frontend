@@ -1,11 +1,35 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { forwardRef } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import { assets } from "../assets/assets";
 import { useApp } from "../hooks/useApp";
+import { deleteCourseAPI } from "../services/api/course";
 import truncateWords from "../utils/truncateWords";
 
 const CourseCard = forwardRef(({ course, onEdit, purchased }, ref) => {
   const { userinfo } = useApp();
+
+  const queryClient = useQueryClient();
+
+  const handleDelete = async () => {
+    try {
+      if (course?.id && userinfo?.id) {
+        if (window.confirm("Are you sure you want to delete this course?")) {
+          const res = await deleteCourseAPI(course.id, userinfo.id);
+          if (res?.success) {
+            toast.success(res.message || "Course deleted successfully");
+            queryClient.invalidateQueries(["courses-list", userinfo]);
+          } else {
+            toast.error(res.message || "Failed to delete course");
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Delete course failed:", error);
+      toast.error("An error occurred while deleting the course");
+    }
+  };
   return (
     <div
       ref={ref}
@@ -61,12 +85,18 @@ const CourseCard = forwardRef(({ course, onEdit, purchased }, ref) => {
           </button>
         </div>
       ) : (
-        <div className="mt-4 flex justify-end">
+        <div className="mt-4 flex justify-between">
           <button
             onClick={() => onEdit()}
             className="px-4 py-2 text-sm font-medium rounded-md border border-indigo-500 text-indigo-600 hover:bg-indigo-50 transition cursor-pointer"
           >
             Edit
+          </button>
+          <button
+            onClick={handleDelete}
+            className="px-4 py-2 text-sm font-medium rounded-md border border-indigo-500 text-indigo-600 hover:bg-indigo-50 transition cursor-pointer"
+          >
+            Delete
           </button>
         </div>
       )}

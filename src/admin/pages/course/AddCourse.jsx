@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { toast } from "react-toastify";
 import { useApp } from "../../../hooks/useApp";
 import { getCategoryAPI } from "../../../services/api/category";
 import { addCourseAPI } from "../../../services/api/course";
@@ -68,7 +69,11 @@ const AddCourse = ({ formData, setFormData, onSuccess }) => {
       const res = await addCourseAPI(fd);
 
       if (res.data.success) {
-        alert(method === "edit" ? "Course updated!" : "Course added!");
+        toast.success(
+          res.data.message || method === "edit"
+            ? "Course updated successfully"
+            : "Course added successfully",
+        );
 
         setFormData({
           title: "",
@@ -86,7 +91,7 @@ const AddCourse = ({ formData, setFormData, onSuccess }) => {
       }
     } catch (error) {
       console.error(error);
-      alert("Failed to save course");
+      toast.error("An error occurred while saving the course"); // ❌ ERROR HANDLING
     } finally {
       setLoading(false); // ✅ ALWAYS STOP LOADING
     }
@@ -146,7 +151,7 @@ const AddCourse = ({ formData, setFormData, onSuccess }) => {
             className="w-full border px-4 py-2 rounded"
           >
             <option value="">Select Category</option>
-            {categories.map((cat) => (
+            {categories?.map((cat) => (
               <option key={cat.id} value={cat.id}>
                 {cat.category_name}
               </option>
