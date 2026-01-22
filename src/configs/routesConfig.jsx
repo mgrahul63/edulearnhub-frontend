@@ -1,6 +1,7 @@
 import AdminCategory from "../admin/pages/category/AdminCategory";
 import AddCourseDetails from "../admin/pages/course/AddCourseDetails";
 import AddminCourse from "../admin/pages/course/AddminCourse";
+import Instructor from "../admin/pages/instructor/Instructor";
 import AdminUser from "../admin/pages/users/AdminUser";
 import AppLayout from "../components/AppLayout";
 import ViewCourseDetails from "../components/educator/ViewCourseDetails";
@@ -60,6 +61,10 @@ export const routerConfig = [
               { path: "payment-success", element: <PaymentSuccess /> },
               { path: "payment-cancel", element: <PaymentCancel /> },
 
+              {
+                path: "instructor/:instructorId",
+                element: <Instructor />,
+              },
               // Admin routes
               { path: "admin/educator", element: <Dashboard /> },
               {

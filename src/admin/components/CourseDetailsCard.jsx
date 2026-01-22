@@ -8,10 +8,10 @@ const CourseDetailsCard = ({ courseInfo }) => {
         {/* Full Description */}
         {courseInfo?.fullDescription?.length > 0 && (
           <div>
-            <h3 className="text-2xl font-semibold text-gray-800 mb-4">
+            <h3 className="text-2xl font-semibold text-gray-800 mb-2">
               Course Content
             </h3>
-            <div className="space-y-4">
+            <div className="space-y-2">
               {courseInfo?.fullDescription.map((desc, index) => {
                 switch (desc.type) {
                   case "paragraph":
@@ -22,7 +22,10 @@ const CourseDetailsCard = ({ courseInfo }) => {
                     );
                   case "list":
                     return (
-                      <ul className="list-none pl-0 space-y-2 text-gray-700 ms-20">
+                      <ul
+                        key={index}
+                        className="list-none pl-0 space-y-2 text-gray-700 ms-20"
+                      >
                         {desc.items?.map((item, idx) => (
                           <li key={idx} className="flex items-start">
                             {/* Icon container: fixed width, always left */}

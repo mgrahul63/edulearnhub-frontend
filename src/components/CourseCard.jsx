@@ -44,36 +44,45 @@ const CourseCard = forwardRef(({ course, onEdit, purchased }, ref) => {
             className="w-full h-40 object-cover hover:scale-105 transition-transform duration-300"
           />
         </div>
-
-        {/* Text Content */}
-        <div className="flex-1">
+      </Link>
+      {/* Text Content */}
+      <div className="flex-1">
+        <Link to={`${course?.id}`} state={{ course }}>
           <h3 className="text-lg font-semibold text-gray-900 mb-1 truncate">
             {course.title}
           </h3>
           <p className="text-sm text-indigo-600 font-medium mb-1">
             Category: {course?.category_name || "N/A"}
           </p>
+        </Link>
+        <Link
+          to={`/instructor/${course?.instructorId}`}
+          state={{ instructorId: course?.instructorId }}
+        >
           <p className="text-sm text-gray-700 mb-1">
-            Instructor: {course?.instructorName || "N/A"}
-          </p>
-          <p className="text-sm text-gray-800 font-medium mt-2">
-            Price: <span className="text-gray-950">${course?.price}</span> |
-            Status:{" "}
-            <span
-              className={`${
-                course?.status === "published"
-                  ? "text-green-600"
-                  : "text-red-500"
-              } font-semibold`}
-            >
-              {course?.status}
+            Instructor:{" "}
+            <span className="hover:text-red-400 hover:underline">
+              {course?.instructorName}
             </span>
           </p>
-          <p className="text-sm text-gray-500 mb-2 line-clamp-2">
-            {truncateWords(course?.description, 7)}
-          </p>
-        </div>
-      </Link>
+        </Link>
+
+        <p className="text-sm text-gray-800 font-medium mt-2">
+          Price: <span className="text-gray-950">${course?.price}</span> |
+          Status:{" "}
+          <span
+            className={`${
+              course?.status === "published" ? "text-green-600" : "text-red-500"
+            } font-semibold`}
+          >
+            {course?.status}
+          </span>
+        </p>
+
+        <p className="text-sm text-gray-500 mb-2 line-clamp-2">
+          {truncateWords(course?.description, 7)}
+        </p>
+      </div>
       {/* Access & Edit Button */}
       {purchased ? (
         <div className="mt-4 flex justify-end">
