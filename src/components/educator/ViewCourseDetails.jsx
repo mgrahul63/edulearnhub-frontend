@@ -69,10 +69,10 @@ const ViewCourseDetails = () => {
             {/* Full Description */}
             {courseInfo?.fullDescription?.length > 0 && (
               <div>
-                <h3 className="text-2xl font-semibold text-gray-800 mb-4">
+                <h3 className="text-2xl font-semibold text-gray-800 mb-2">
                   Course Content
                 </h3>
-                <div className="space-y-4">
+                <div className="space-y-2">
                   {courseInfo.fullDescription.map((desc, index) => {
                     switch (desc.type) {
                       case "paragraph":
@@ -86,14 +86,18 @@ const ViewCourseDetails = () => {
                         );
                       case "list":
                         return (
-                          <ul
-                            key={index}
-                            className="list-none list-inside pl-5 text-gray-700 space-y-1"
-                          >
+                          <ul className="list-none pl-0 space-y-2 text-gray-700 ms-10 md:ms-10">
                             {desc.items?.map((item, idx) => (
-                              <li key={idx}>
-                                <FaCheckCircle className="inline mr-2 text-green-500" />
-                                {item}
+                              <li key={idx} className="flex items-start">
+                                {/* Icon container: fixed width, always left */}
+                                <span className="shrink-0 w-6 mt-1 text-green-500">
+                                  <FaCheckCircle />
+                                </span>
+
+                                {/* Text container: wraps nicely */}
+                                <span className="flex-1 wrap-break-word">
+                                  {item}
+                                </span>
                               </li>
                             ))}
                           </ul>
@@ -122,6 +126,7 @@ const ViewCourseDetails = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex items-center gap-2">
                 <FaVideo className="text-indigo-500" />
+
                 <span className="text-gray-800 font-medium">
                   {courseInfo.totalDuration || 0} mins •{" "}
                   {courseInfo.totalLessons || 0} Lessons
@@ -133,13 +138,17 @@ const ViewCourseDetails = () => {
                   {courseInfo.level || "Beginner"}
                 </span>
               </div>
-              <div>
-                <span className="text-gray-800 font-medium">Language:</span>{" "}
-                <span className="text-gray-600">
-                  {courseInfo.language || "N/A"}
-                </span>
-              </div>
-              {courseInfo.certificate && (
+
+              {courseInfo?.language && (
+                <div>
+                  <span className="text-gray-800 font-medium">Language:</span>{" "}
+                  <span className="text-gray-600">
+                    {courseInfo?.language || "N/A"}
+                  </span>
+                </div>
+              )}
+
+              {courseInfo?.certificate && (
                 <div className="flex items-center gap-2 text-green-600 font-semibold">
                   <FaCertificate />
                   Certificate Available
@@ -150,7 +159,7 @@ const ViewCourseDetails = () => {
             {/* Promo Video */}
             {courseInfo.promoVideoUrl && (
               <div className="mt-4">
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                <h3 className="text-xl font-semibold text-gray-800 ">
                   Promo Video
                 </h3>
                 <a
@@ -176,14 +185,21 @@ const ViewCourseDetails = () => {
               (section) =>
                 section.data?.length > 0 && (
                   <div key={section.title}>
-                    <h3 className="text-xl font-semibold text-gray-800 mb-3">
+                    <h3 className="text-xl font-semibold text-gray-800">
                       {section.title}
                     </h3>
-                    <ul className="list-none list-inside pl-5 text-gray-700 space-y-1">
+                    <ul className="list-none pl-0 text-gray-700 space-y-1">
                       {section.data.map((item, idx) => (
-                        <li key={idx}>
-                          <FaCheckCircle className="inline mr-2 text-green-500" />
-                          {item || "-"}
+                        <li key={idx} className="flex items-start">
+                          {/* Fixed-width icon */}
+                          <span className="shrink-0 w-5 mt-1 text-green-500">
+                            <FaCheckCircle />
+                          </span>
+
+                          {/* Text */}
+                          <span className="flex-1 wrap-break-word">
+                            {item || "-"}
+                          </span>
                         </li>
                       ))}
                     </ul>

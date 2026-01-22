@@ -8,23 +8,29 @@ const CourseDetailsForm = ({ initialData, onSubmit, setCourseInfo }) => {
     defaultValues: initialData,
   });
 
-  // Reset form after fetching data
+  // reset form when initial data changes
   useEffect(() => {
     if (initialData) reset(initialData);
   }, [initialData, reset]);
 
-  // সব ফিল্ডের মান রিয়েল টাইমে ধরে রাখবে
+  // sync all form data to parent (SAFE)
   const watchAll = useWatch({ control });
-  // প্রতিবার watchAll পরিবর্তিত হলে parent update
-  if (setCourseInfo) setCourseInfo(watchAll);
+  useEffect(() => {
+    if (setCourseInfo) setCourseInfo(watchAll);
+  }, [watchAll, setCourseInfo]);
 
   const watchFullDescription = watch("fullDescription");
 
+  // Full Description Field Array (WITH MOVE)
   const {
     fields: descFields,
     append: appendDesc,
     remove: removeDesc,
-  } = useFieldArray({ control, name: "fullDescription" });
+    move: moveDesc,
+  } = useFieldArray({
+    control,
+    name: "fullDescription",
+  });
 
   const {
     fields: reqFields,
@@ -44,16 +50,13 @@ const CourseDetailsForm = ({ initialData, onSubmit, setCourseInfo }) => {
     remove: removeTarget,
   } = useFieldArray({ control, name: "targetAudience" });
 
-  const submitHandler = (data) => {
-    // check if every attribute has at least one value
+  const submitHandler = async (data) => {
     const allValid =
-      data.fullDescription.length > 0 &&
-      data.requirements.some((r) => r.trim() !== "") &&
-      data.whatYouWillLearn.some((r) => r.trim() !== "") &&
-      data.targetAudience.some((r) => r.trim() !== "") &&
-      data.language.trim() &&
-      data.totalDuration > 0 &&
-      data.totalLessons > 0;
+      data.fullDescription?.length > 0 &&
+      data.requirements?.some((r) => r.trim()) &&
+      data.whatYouWillLearn?.some((r) => r.trim()) &&
+      data.targetAudience?.some((r) => r.trim()) &&
+      data.language?.trim();
 
     if (!allValid) {
       alert("Please fill at least one value for every attribute");
@@ -61,36 +64,66 @@ const CourseDetailsForm = ({ initialData, onSubmit, setCourseInfo }) => {
     }
 
     setLoading(true);
-    onSubmit(data);
+    await onSubmit(data);
     setLoading(false);
   };
 
   return (
     <form onSubmit={handleSubmit(submitHandler)} className="space-y-6">
-      {/* Full Description */}
+      {/* ================= FULL DESCRIPTION ================= */}
       <div>
         <h3 className="font-medium mb-2">Full Description</h3>
+
         {descFields.map((field, index) => (
           <div key={field.id} className="mb-4 p-3 border rounded">
-            <div className="flex justify-between mb-2">
+            {/* Header */}
+            <div className="flex justify-between items-center mb-2">
               <span>Block {index + 1}</span>
-              <button
-                type="button"
-                onClick={() => removeDesc(index)}
-                className="text-red-500 text-sm"
-              >
-                Remove
-              </button>
+
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  disabled={index === 0}
+                  onClick={() => moveDesc(index, index - 1)}
+                  className={`text-sm ${
+                    index === 0
+                      ? "opacity-40 cursor-not-allowed"
+                      : "cursor-pointer"
+                  }`}
+                >
+                  ↑
+                </button>
+
+                <button
+                  type="button"
+                  disabled={index === descFields.length - 1}
+                  onClick={() => moveDesc(index, index + 1)}
+                  className={`text-sm ${
+                    index === descFields.length - 1
+                      ? "opacity-40 cursor-not-allowed"
+                      : "cursor-pointer"
+                  }`}
+                >
+                  ↓
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => removeDesc(index)}
+                  className="text-red-500 text-sm cursor-pointer"
+                >
+                  Remove
+                </button>
+              </div>
             </div>
-            <div className="flex gap-1 w-full">
+
+            {/* Content */}
+            <div className="flex gap-2">
               <Controller
                 control={control}
                 name={`fullDescription.${index}.type`}
-                render={({ field: typeField }) => (
-                  <select
-                    {...typeField}
-                    className="border p-1 rounded mb-2 w-4/12"
-                  >
+                render={({ field }) => (
+                  <select {...field} className="border p-1 rounded w-4/12">
                     <option value="paragraph">Paragraph</option>
                     <option value="list">List</option>
                     <option value="link">Link</option>
@@ -99,7 +132,7 @@ const CourseDetailsForm = ({ initialData, onSubmit, setCourseInfo }) => {
               />
 
               {/* Paragraph */}
-              {watchFullDescription[index]?.type === "paragraph" && (
+              {watchFullDescription?.[index]?.type === "paragraph" && (
                 <textarea
                   {...register(`fullDescription.${index}.text`)}
                   className="w-full border p-2 rounded"
@@ -108,10 +141,10 @@ const CourseDetailsForm = ({ initialData, onSubmit, setCourseInfo }) => {
               )}
 
               {/* List */}
-              {watchFullDescription[index]?.type === "list" && (
-                <div>
-                  {watchFullDescription[index].items?.map((item, idx) => (
-                    <div key={idx} className="flex items-center gap-2 mb-1">
+              {watchFullDescription?.[index]?.type === "list" && (
+                <div className="w-full">
+                  {watchFullDescription[index]?.items?.map((_, idx) => (
+                    <div key={idx} className="flex gap-2 mb-1">
                       <input
                         {...register(`fullDescription.${index}.items.${idx}`)}
                         className="w-full border p-1 rounded"
@@ -141,7 +174,7 @@ const CourseDetailsForm = ({ initialData, onSubmit, setCourseInfo }) => {
                       ];
                       setValue(`fullDescription.${index}.items`, items);
                     }}
-                    className="text-indigo-600 text-sm mt-1"
+                    className="text-indigo-600 text-sm"
                   >
                     + Add List Item
                   </button>
@@ -149,17 +182,17 @@ const CourseDetailsForm = ({ initialData, onSubmit, setCourseInfo }) => {
               )}
 
               {/* Link */}
-              {watchFullDescription[index]?.type === "link" && (
+              {watchFullDescription?.[index]?.type === "link" && (
                 <div className="flex flex-col gap-2 w-full">
                   <input
                     {...register(`fullDescription.${index}.url`)}
-                    className="w-full border p-2 rounded"
+                    className="border p-2 rounded"
                     placeholder="Link URL"
                   />
                   <input
                     {...register(`fullDescription.${index}.description`)}
-                    className="w-full border p-2 rounded"
-                    placeholder="Link Description"
+                    className="border p-2 rounded"
+                    placeholder="Link description"
                   />
                 </div>
               )}
@@ -167,6 +200,7 @@ const CourseDetailsForm = ({ initialData, onSubmit, setCourseInfo }) => {
           </div>
         ))}
 
+        {/* Add buttons */}
         <div className="flex gap-2">
           <button
             type="button"
@@ -194,7 +228,7 @@ const CourseDetailsForm = ({ initialData, onSubmit, setCourseInfo }) => {
         </div>
       </div>
 
-      {/* Requirements, Learn, Target */}
+      {/* ================= OTHER SECTIONS ================= */}
       {[
         {
           field: "requirements",
@@ -217,17 +251,14 @@ const CourseDetailsForm = ({ initialData, onSubmit, setCourseInfo }) => {
       ].map(({ field, fieldsArray, appendFn, removeFn }) => (
         <div key={field} className="border rounded p-2">
           <h3 className="font-medium mb-2">
-            {field
-              .replace(/([A-Z])/g, " $1") // add space before uppercase letters
-              .replace(/^./, (str) => str.toUpperCase())}{" "}
-            {/* capitalize first letter */}
+            {field.replace(/([A-Z])/g, " $1")}
           </h3>
+
           {fieldsArray.map((f, i) => (
-            <div key={f.id} className="flex items-center gap-2 mb-1">
+            <div key={f.id} className="flex gap-2 mb-1">
               <input
                 {...register(`${field}.${i}`)}
                 className="w-full border p-1 rounded"
-                placeholder={`Enter ${field}`}
               />
               <button
                 type="button"
@@ -238,68 +269,48 @@ const CourseDetailsForm = ({ initialData, onSubmit, setCourseInfo }) => {
               </button>
             </div>
           ))}
+
           <button
             type="button"
             onClick={() => appendFn("")}
-            className="text-indigo-600 text-sm mt-1"
+            className="text-indigo-600 text-sm"
           >
-            + Add {field}
+            + Add
           </button>
         </div>
       ))}
 
-      {/* Other Fields */}
+      {/* ================= OTHER FIELDS ================= */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label htmlFor="">Total Duration(minutes)</label>
-          <input
-            type="number"
-            placeholder="Total Duration (minutes)"
-            {...register("totalDuration")}
-            className="border p-2 rounded"
-          />
-        </div>
-        <div>
-          <label htmlFor="">Total Lessons</label>
-          <input
-            type="number"
-            placeholder="Total Lessons"
-            {...register("totalLessons")}
-            className="border p-2 rounded"
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-        <div>
-          <label htmlFor="">Language</label>
-          <input
-            type="text"
-            placeholder="Language"
-            {...register("language")}
-            className="border p-2 rounded"
-          />
-        </div>
-        <div className="block">
-          <label htmlFor="">Level</label>
-          <br />
-          <select {...register("level")} className="border p-2 rounded">
-            <option value="beginner">Beginner</option>
-            <option value="intermediate">Intermediate</option>
-            <option value="advanced">Advanced</option>
-          </select>
-        </div>
-      </div>
-      <div>
-        <label htmlFor="">Demo Video URl</label>
         <input
-          type="text"
-          placeholder="Promo Video URL"
-          {...register("promoVideoUrl")}
-          className="border p-2 rounded w-full mt-2"
+          type="number"
+          {...register("totalDuration")}
+          placeholder="Total Duration (minutes)"
+          className="border p-2 rounded"
+        />
+        <input
+          type="number"
+          {...register("totalLessons")}
+          placeholder="Total Lessons"
+          className="border p-2 rounded"
         />
       </div>
-      <label className="flex items-center gap-2 mt-2">
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <input
+          type="text"
+          {...register("language")}
+          placeholder="Language"
+          className="border p-2 rounded"
+        />
+        <select {...register("level")} className="border p-2 rounded">
+          <option value="beginner">Beginner</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="advanced">Advanced</option>
+        </select>
+      </div>
+
+      <label className="flex gap-2">
         <input type="checkbox" {...register("certificate")} />
         Certificate
       </label>
@@ -307,9 +318,7 @@ const CourseDetailsForm = ({ initialData, onSubmit, setCourseInfo }) => {
       <button
         type="submit"
         disabled={loading}
-        className={`mt-4 px-6 py-2 rounded bg-indigo-600 text-white ${
-          loading ? "opacity-50 cursor-not-allowed" : ""
-        }`}
+        className="px-6 py-2 bg-indigo-600 text-white rounded"
       >
         {loading ? "Saving..." : "Save Course Details"}
       </button>

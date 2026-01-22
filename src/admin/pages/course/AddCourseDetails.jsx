@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import { assets } from "../../../assets/assets";
 import {
   courseDetailsAPI,
@@ -29,24 +30,22 @@ const AddCourseDetails = () => {
 
   const [edit, setEdit] = useState(false);
 
-  // ---- useQuery instead of useEffect ----
   const { data, isLoading, error } = useQuery({
     queryKey: ["courseDetails", courseId],
     queryFn: () => getCourseDetailsAPI(courseId),
     enabled: !!courseId,
-    initialData: course ? { success: true, data: course } : undefined,
+    initialData: course ? course : undefined,
   });
 
   // courseDetails stays same
   const courseDetails = data?.success
-    ? data.data
+    ? { courseId, ...data.data }
     : { courseId, ...EMPTY_DETAILS };
 
   const handleSubmit = async (updatedData) => {
-    await courseDetailsAPI(updatedData);
-    // Update local data after submit
-    // Since we're not using setState anymore, you can optionally refetch or keep it simple
-    data.data = updatedData; // mutating React Query cache directly is okay for simple cases
+    const res = await courseDetailsAPI(updatedData);
+    data.data = updatedData;
+    toast.success(res.message || "Course details saved successfully");
     setEdit(false);
   };
 
@@ -115,7 +114,7 @@ const AddCourseDetails = () => {
 
             <button
               onClick={() => setEdit(false)}
-              className="px-4 py-2 font-medium border-2  bg-indigo-500 text-white cursor-pointer rounded-xl"
+              className="inline px-4 py-2 font-medium border-2  bg-indigo-500 text-white cursor-pointer rounded-xl"
             >
               Cancel
             </button>

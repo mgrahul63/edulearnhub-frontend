@@ -66,6 +66,5 @@ export const getCourseDetailsAPI = async (courseId) => {
     return res.data;
   } catch (error) {
     console.error("Get course details failed:", error);
-    throw error; // let React Query handle it
   }
 };
