@@ -53,7 +53,7 @@ const AddCourse = ({ formData, setFormData, onSuccess }) => {
       fd.append("title", title);
       fd.append("description", description);
       fd.append("categoryId", categoryId);
-      fd.append("instructorId", instructorId || "");
+      fd.append("instructorId", userinfo.id || "");
       fd.append("price", price);
       fd.append("status", status);
 
