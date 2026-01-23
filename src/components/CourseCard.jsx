@@ -4,11 +4,23 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { assets } from "../assets/assets";
 import { useApp } from "../hooks/useApp";
+import { useEnrollmentStatus } from "../hooks/useEnrollmentStatus";
 import { deleteCourseAPI } from "../services/api/course";
 import truncateWords from "../utils/truncateWords";
 
 const CourseCard = forwardRef(({ course, onEdit, purchased }, ref) => {
   const { userinfo } = useApp();
+
+  const courseId = course?.id;
+  const userId = userinfo?.id;
+
+  const { data } = useEnrollmentStatus(courseId, userId);
+  const isEnrolled = data?.success ? data.data : false;
+
+  const buttonText = isEnrolled ? "Go to Course" : "Enroll Now";
+  const buttonPath = isEnrolled
+    ? `/course/${courseId}`
+    : `/payments/${courseId}`;
 
   const queryClient = useQueryClient();
 
@@ -54,7 +66,11 @@ const CourseCard = forwardRef(({ course, onEdit, purchased }, ref) => {
           <p className="text-sm text-indigo-600 font-medium mb-1">
             Category: {course?.category_name || "N/A"}
           </p>
+          <p className="text-sm text-gray-500 mb-2 line-clamp-2">
+            {truncateWords(course?.description, 10)}
+          </p>
         </Link>
+
         <Link
           to={`/instructor/${course?.instructorId}`}
           state={{ instructorId: course?.instructorId }}
@@ -78,20 +94,17 @@ const CourseCard = forwardRef(({ course, onEdit, purchased }, ref) => {
             {course?.status}
           </span>
         </p>
-
-        <p className="text-sm text-gray-500 mb-2 line-clamp-2">
-          {truncateWords(course?.description, 10)}
-        </p>
       </div>
       {/* Access & Edit Button */}
       {purchased ? (
         <div className="mt-4 flex justify-end">
-          <button
-            onClick={() => onEdit()}
-            className="px-4 py-2 text-sm font-medium rounded-md border border-indigo-500 text-indigo-600 hover:bg-indigo-50 transition cursor-pointer"
+          <Link
+            to={buttonPath}
+            state={{ course }}
+            className={`px-4 py-2 ${isEnrolled ? "bg-green-500" : "bg-indigo-600"} text-white text-sm font-medium rounded-md hover:bg-indigo-700 transition`}
           >
-            Access Course
-          </button>
+            {buttonText}
+          </Link>
         </div>
       ) : (
         <div className="mt-4 flex justify-between">

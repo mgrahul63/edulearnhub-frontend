@@ -1,22 +1,20 @@
 // Dashboard.jsx
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { useCallback, useRef, useState } from "react";
 import CategoryButton from "../../components/CategoryButton";
 import CourseCard from "../../components/CourseCard";
 import NotFoundData from "../../components/NotFoundData";
 import { useApp } from "../../hooks/useApp";
-import { getCategoryAPI } from "../../services/api/category";
 import { getCoursesAPI } from "../../services/api/course"; // must accept page, limit, category
+import { useCategory } from "../../hooks/useCategory";
 
 const Dashboard = () => {
   const { userinfo } = useApp();
   const [selectedCategory, setSelectedCategory] = useState("all");
 
-  const { data: categoriesData, isLoading: categoryLoading } = useQuery({
-    queryKey: ["category", userinfo],
-    queryFn: getCategoryAPI,
-    enabled: !!userinfo,
-  });
+  const { data: categoriesData, isLoading: categoryLoading } = useCategory(
+    userinfo?.id,
+  );
 
   // Infinite query
   const {

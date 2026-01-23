@@ -68,3 +68,15 @@ export const getCourseDetailsAPI = async (courseId) => {
     console.error("Get course details failed:", error);
   }
 };
+
+export const checkEnrollmentAPI = async (courseId, userId) => {
+  try {
+    const res = await customaxios.get("/api/auth/check-enrollment", {
+      params: { courseId, userId },
+    });
+    return res.data;
+  } catch (error) {
+    console.error("Check enrollment failed:", error);
+    throw error;
+  }
+};

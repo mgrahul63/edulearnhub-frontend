@@ -1,57 +1,21 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { useCallback, useRef, useState } from "react";
+import { useState } from "react";
 import CourseCard from "../../../components/CourseCard";
 import NotFoundData from "../../../components/NotFoundData";
 import { useApp } from "../../../hooks/useApp";
-import { getCategoryAPI } from "../../../services/api/category";
-import { getCoursesAPI } from "../../../services/api/course";
+import { useCategory } from "../../../hooks/useCategory";
+import { useInfiniteCourses } from "../../../hooks/useInfiniteCourses";
 
 const CourseList = ({ setFormData, onEdit }) => {
   const { userinfo } = useApp();
   const [selectedCategory, setSelectedCategory] = useState("all");
 
-  const { data: categoriesData } = useQuery({
-    queryKey: ["category", userinfo],
-    queryFn: getCategoryAPI,
-    enabled: !!userinfo,
-  });
+  const { data: categoriesData, error } = useCategory(userinfo?.id);
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-    error,
-  } = useInfiniteQuery({
-    queryKey: ["courses-list", userinfo, selectedCategory],
-    queryFn: ({ pageParam = 1 }) =>
-      getCoursesAPI({
-        page: pageParam,
-        limit: 10,
-        categoryId: selectedCategory,
-        status: null,
-        instructorId: userinfo?.id,
-      }),
-    enabled: !!userinfo,
-    getNextPageParam: (lastPage, pages) =>
-      lastPage.courses.length < 10 ? undefined : pages.length + 1,
-  });
-
-  const observer = useRef();
-  const lastCourseRef = useCallback(
-    (node) => {
-      if (isFetchingNextPage) return;
-      if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasNextPage) {
-          fetchNextPage();
-        }
-      });
-      if (node) observer.current.observe(node);
-    },
-    [isFetchingNextPage, fetchNextPage, hasNextPage],
-  );
+  const { data, lastCourseRef, isLoading, isFetchingNextPage } =
+    useInfiniteCourses({
+      userId: userinfo?.id,
+      selectedCategory,
+    });
 
   const handleEdit = (course) => {
     setFormData({

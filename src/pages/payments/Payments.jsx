@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useApp } from "../../hooks/useApp";
 import { paymentsAPI } from "../../services/api/payments";
-
 const Payments = () => {
   const { userinfo } = useApp();
   const { state } = useLocation();
@@ -52,9 +52,11 @@ const Payments = () => {
       console.log("Payment payload:", payload);
       const res = await paymentsAPI(payload); // mock API call
       // later: axios.post("/api/payments", payload)
-
-      alert("Payment submitted successfully!");
-      navigate("/"); // success page later
+      console.log(res);
+      if (res.success) {
+        toast.success(res.message || "Payment successful!");
+        navigate(-1); // success page later
+      }
     } catch (err) {
       setError("Payment failed. Try again.");
     } finally {

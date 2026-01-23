@@ -22,10 +22,7 @@ const ViewCourseDetails = () => {
     <div className="w-full mt-2 sm:mt-5">
       <ScrollToTop />
       {/* heading */}
-      <HeadingForCourseDetails
-        course={course} 
-        isbutton={true}
-      />
+      <HeadingForCourseDetails course={course} isbutton={true} />
       <div className=" my-2 mx-auto bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
         {isLoading && (
           <p className="text-center py-6">Loading course details...</p>
