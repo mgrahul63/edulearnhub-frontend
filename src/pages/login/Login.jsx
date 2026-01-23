@@ -34,7 +34,7 @@ const Login = () => {
         setUserinfo(user);
         alert(`welcome, ${user.name}!`);
 
-        if (user.role === "admin") {
+        if (user?.role === "admin") {
           navigate("/");
         } else {
           navigate("/"); //educator

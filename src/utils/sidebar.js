@@ -11,9 +11,18 @@ const SIDEBARMENUS = {
     },
     { name: "Manage Courses", path: "admin/courses", icon: assets.cross_icon },
   ],
+  instructor: [
+    { name: "Dashboard", path: "/instructor/educator", icon: assets.home_icon },
+    { name: "My Courses", path: "my-courses", icon: assets.my_course_icon },
+    {
+      name: "Manage Courses",
+      path: "instructor/courses",
+      icon: assets.cross_icon,
+    },
+  ],
   educator: [
     { name: "Dashboard", path: "/educator", icon: assets.home_icon },
-    { name: "My Courses", path: "my-courses", icon: assets.my_course_icon },
+
     {
       name: "Student Enrolled",
       path: "students-enrolled",

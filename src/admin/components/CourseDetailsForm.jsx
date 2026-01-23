@@ -133,16 +133,28 @@ const CourseDetailsForm = ({ initialData, onSubmit, setCourseInfo }) => {
 
               {/* Paragraph */}
               {watchFullDescription?.[index]?.type === "paragraph" && (
-                <textarea
-                  {...register(`fullDescription.${index}.text`)}
-                  className="w-full border p-2 rounded"
-                  placeholder="Paragraph text"
-                />
+                <div className="flex flex-col">
+                  <input
+                    {...register(`fullDescription.${index}.heading`)}
+                    className="w-full border p-2 rounded"
+                    placeholder="Paragraph Heading (optional)"
+                  />
+                  <textarea
+                    {...register(`fullDescription.${index}.text`)}
+                    className="w-full border p-2 rounded"
+                    placeholder="Paragraph text"
+                  />
+                </div>
               )}
 
               {/* List */}
               {watchFullDescription?.[index]?.type === "list" && (
                 <div className="w-full">
+                  <input
+                    {...register(`fullDescription.${index}.heading`)}
+                    className="w-full border p-1 rounded"
+                    placeholder={`List Heading (optional)`}
+                  />
                   {watchFullDescription[index]?.items?.map((_, idx) => (
                     <div key={idx} className="flex gap-2 mb-1">
                       <input
@@ -184,6 +196,11 @@ const CourseDetailsForm = ({ initialData, onSubmit, setCourseInfo }) => {
               {/* Link */}
               {watchFullDescription?.[index]?.type === "link" && (
                 <div className="flex flex-col gap-2 w-full">
+                  <input
+                    {...register(`fullDescription.${index}.heading`)}
+                    className="border p-2 rounded"
+                    placeholder="Link Heading (optional)"
+                  />
                   <input
                     {...register(`fullDescription.${index}.url`)}
                     className="border p-2 rounded"

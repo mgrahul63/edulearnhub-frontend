@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { FaCertificate, FaCheckCircle, FaVideo } from "react-icons/fa";
 import { useLocation, useParams } from "react-router-dom";
-import { assets } from "../../assets/assets";
 import { getCoursesDetailsAPI } from "../../services/api/course";
+import HeadingForCourseDetails from "../HeadingForCourseDetails";
 import ScrollToTop from "../ScrollToTop";
 
 const ViewCourseDetails = () => {
@@ -17,37 +17,15 @@ const ViewCourseDetails = () => {
   });
 
   const courseInfo = data?.success ? data.data : null;
+  const whoHeading = courseInfo?.fullDescription[0]?.heading;
   return (
     <div className="w-full mt-2 sm:mt-5">
       <ScrollToTop />
       {/* heading */}
-      <div className="flex flex-col justify-between p-3 border rounded-xl bg-white hover:shadow-lg transition duration-300">
-        {/* Thumbnail */}
-        <div className="overflow-hidden rounded-lg mb-4">
-          <img
-            src={course?.thumbnail || assets?.course_1_thumbnail}
-            alt={course?.title}
-            className="w-full h-40 object-cover hover:scale-105 transition-transform duration-300"
-          />
-        </div>
-
-        {/* Text Content */}
-        <div className="flex-1">
-          <h3 className="text-lg font-semibold text-gray-900 mb-1 truncate">
-            {course?.title}
-          </h3>
-          <p className="text-sm text-indigo-600 font-medium mb-1">
-            Category: {course?.category_name || "N/A"}
-          </p>
-          <p className="text-sm text-gray-800 font-medium mt-2">
-            Price: <span className="text-gray-950">${course?.price}</span>
-          </p>
-          <p className="text-sm text-gray-500 mb-2 line-clamp-2">
-            {course?.description}
-          </p>
-        </div>
-      </div>
-
+      <HeadingForCourseDetails
+        course={course} 
+        isbutton={true}
+      />
       <div className=" my-2 mx-auto bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
         {isLoading && (
           <p className="text-center py-6">Loading course details...</p>
@@ -69,50 +47,77 @@ const ViewCourseDetails = () => {
             {/* Full Description */}
             {courseInfo?.fullDescription?.length > 0 && (
               <div>
-                <h3 className="text-2xl font-semibold text-gray-800 mb-2">
-                  Course Content
-                </h3>
+                {!whoHeading && (
+                  <h3 className="text-2xl font-semibold text-gray-800 mb-2">
+                    Course Content
+                  </h3>
+                )}
                 <div className="space-y-2">
                   {courseInfo.fullDescription.map((desc, index) => {
                     switch (desc.type) {
                       case "paragraph":
                         return (
-                          <p
+                          <div
                             key={index}
-                            className="text-gray-700 leading-relaxed"
+                            className={`${desc?.heading ? "mb-6" : ""}`}
                           >
-                            {desc.text}
-                          </p>
+                            {desc?.heading && (
+                              <h4 className="text-xl font-semibold text-gray-900 mb-1">
+                                {desc.heading}
+                              </h4>
+                            )}
+
+                            <p className="text-gray-700 leading-relaxed text-justify">
+                              {desc?.text}
+                            </p>
+                          </div>
                         );
                       case "list":
                         return (
-                          <ul className="list-none pl-0 space-y-2 text-gray-700 ms-10 md:ms-10">
-                            {desc.items?.map((item, idx) => (
-                              <li key={idx} className="flex items-start">
-                                {/* Icon container: fixed width, always left */}
-                                <span className="shrink-0 w-6 mt-1 text-green-500">
-                                  <FaCheckCircle />
-                                </span>
+                          <div key={index} className="mb-6">
+                            {desc?.heading && (
+                              <h5 className="font-semibold text-gray-900 mb-1">
+                                {desc.heading}
+                              </h5>
+                            )}
+                            <ul
+                              key={index}
+                              className="list-none pl-0 space-y-2 text-gray-700 sm:ms-2 md:ms-10"
+                            >
+                              {desc.items?.map((item, idx) => (
+                                <li key={idx} className="flex items-start">
+                                  {/* Icon container: fixed width, always left */}
+                                  <span className="shrink-0 w-6 mt-1 text-green-500">
+                                    <FaCheckCircle />
+                                  </span>
 
-                                {/* Text container: wraps nicely */}
-                                <span className="flex-1 wrap-break-word">
-                                  {item}
-                                </span>
-                              </li>
-                            ))}
-                          </ul>
+                                  {/* Text container: wraps nicely */}
+                                  <span className="flex-1 wrap-break-word">
+                                    {item}
+                                  </span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
                         );
                       case "link":
                         return (
-                          <a
-                            key={index}
-                            href={desc.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-indigo-600 hover:text-indigo-800 underline"
-                          >
-                            {desc.description || desc.url}
-                          </a>
+                          <div key={index} className="mb-5 flex gap-1">
+                            {desc?.heading && (
+                              <h5 className="font-semibold text-gray-900 mb-1">
+                                {desc.heading}
+                              </h5>
+                            )}
+                            <a
+                              key={index}
+                              href={desc.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-indigo-600 hover:text-indigo-800 underline"
+                            >
+                              {desc.description || desc.url}
+                            </a>
+                          </div>
                         );
                       default:
                         return null;

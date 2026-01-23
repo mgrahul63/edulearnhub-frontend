@@ -8,12 +8,12 @@ import ViewCourseDetails from "../components/educator/ViewCourseDetails";
 import ErrorBoundary from "../components/ErrorBoundary";
 import CourseDocs from "../pages/CourseDocs";
 import CourseQuiz from "../pages/CourseQuiz";
-import AddCourses from "../pages/educator/AddCourses";
 import Dashboard from "../pages/educator/Dashboard";
 import Educator from "../pages/educator/Educator";
 import MyCourses from "../pages/educator/MyCourses";
 import StudentsEnrolled from "../pages/educator/StudentsEnrolled";
 import Login from "../pages/login/Login";
+import Payments from "../pages/payments/Payments";
 import Signup from "../pages/register/Signup";
 import CourseDetails from "../pages/student/CourseDetails";
 import CoursesList from "../pages/student/CoursesList";
@@ -53,6 +53,10 @@ export const routerConfig = [
               { path: "course-list", element: <CoursesList /> },
               { path: "course-list/:keyword", element: <CoursesList /> },
               { path: "course/:id", element: <CourseDetails /> },
+              {
+                path: "payments/:courseId",
+                element: <Payments />,
+              },
               { path: "my-enrollments", element: <MyEnrollments /> },
               { path: "player/:courseId", element: <Player /> },
               { path: "loading/:path", element: <Loading /> },
@@ -61,26 +65,27 @@ export const routerConfig = [
               { path: "payment-success", element: <PaymentSuccess /> },
               { path: "payment-cancel", element: <PaymentCancel /> },
 
+              // instructor routes
+              { path: "instructor/educator", element: <Dashboard /> },
               {
                 path: "instructor/:instructorId",
                 element: <Instructor />,
               },
-              // Admin routes
-              { path: "admin/educator", element: <Dashboard /> },
               {
-                path: "admin/educator/:courseId",
+                path: "instructor/educator/:courseId",
                 element: <ViewCourseDetails />,
               },
-              { path: "admin/courses", element: <AddminCourse /> },
+              { path: "instructor/courses", element: <AddminCourse /> },
               {
-                path: "admin/courses/:courseId",
+                path: "instructor/courses/:courseId",
                 element: <AddCourseDetails />,
               },
+
+              // admin routes
               { path: "admin/categories", element: <AdminCategory /> },
               { path: "admin/users", element: <AdminUser /> },
 
               // Common
-              { path: "add-courses", element: <AddCourses /> },
               { path: "students-enrolled", element: <StudentsEnrolled /> },
 
               // 404

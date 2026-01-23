@@ -1,57 +1,85 @@
 import { FaCertificate, FaCheckCircle, FaVideo } from "react-icons/fa";
 
 const CourseDetailsCard = ({ courseInfo }) => {
-  if (!courseInfo) return null;
+  if (!courseInfo) return null; 
+  const whoHeading = courseInfo.fullDescription[0]?.heading;
   return (
     <div className="mx-auto bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
       <div className="p-6 space-y-6">
         {/* Full Description */}
         {courseInfo?.fullDescription?.length > 0 && (
           <div>
-            <h3 className="text-2xl font-semibold text-gray-800 mb-2">
-              Course Content
-            </h3>
+            {!whoHeading && (
+              <h3 className="text-2xl font-semibold text-gray-800 mb-2">
+                Course Content
+              </h3>
+            )}
             <div className="space-y-2">
               {courseInfo?.fullDescription.map((desc, index) => {
-                switch (desc.type) {
+                switch (desc?.type) {
                   case "paragraph":
                     return (
-                      <p key={index} className="text-gray-700 leading-relaxed">
-                        {desc.text}
-                      </p>
+                      <div
+                        key={index}
+                        className={`${desc?.heading ? "mb-6" : ""}`}
+                      >
+                        {desc?.heading && (
+                          <h4 className="text-xl font-semibold text-gray-900 mb-1">
+                            {desc.heading}
+                          </h4>
+                        )}
+
+                        <p className="text-gray-700 leading-relaxed">
+                          {desc?.text}
+                        </p>
+                      </div>
                     );
                   case "list":
                     return (
-                      <ul
-                        key={index}
-                        className="list-none pl-0 space-y-2 text-gray-700 ms-20"
-                      >
-                        {desc.items?.map((item, idx) => (
-                          <li key={idx} className="flex items-start">
-                            {/* Icon container: fixed width, always left */}
-                            <span className="shrink-0 w-6 mt-1 text-green-500">
-                              <FaCheckCircle />
-                            </span>
+                      <div key={index} className="mb-6">
+                        {desc?.heading && (
+                          <h5 className="font-semibold text-gray-900 mb-1">
+                            {desc.heading}
+                          </h5>
+                        )}
+                        <ul
+                          key={index}
+                          className="list-none pl-0 space-y-2 text-gray-700 ms-10"
+                        >
+                          {desc.items?.map((item, idx) => (
+                            <li key={idx} className="flex items-start">
+                              {/* Icon container: fixed width, always left */}
+                              <span className="shrink-0 w-6 mt-1 text-green-500">
+                                <FaCheckCircle />
+                              </span>
 
-                            {/* Text container: wraps nicely */}
-                            <span className="flex-1 wrap-break-word">
-                              {item}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
+                              {/* Text container: wraps nicely */}
+                              <span className="flex-1 wrap-break-word">
+                                {item}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     );
                   case "link":
                     return (
-                      <a
-                        key={index}
-                        href={desc.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-indigo-600 hover:text-indigo-800 underline"
-                      >
-                        {desc.description || desc.url}
-                      </a>
+                      <div key={index} className="mb-5 flex gap-1">
+                        {desc?.heading && (
+                          <h5 className="font-semibold text-gray-900 mb-1">
+                            {desc.heading}
+                          </h5>
+                        )}
+                        <a
+                          key={index}
+                          href={desc.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-indigo-600 hover:text-indigo-800 underline"
+                        >
+                          {desc.description || desc.url}
+                        </a>
+                      </div>
                     );
                   default:
                     return null;

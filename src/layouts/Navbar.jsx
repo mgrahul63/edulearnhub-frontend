@@ -58,7 +58,7 @@ const Navbar = () => {
 
   const handlCLick = () => {
     window.location.href = "/";
-  };
+  }; 
   return (
     <>
       <nav
@@ -88,7 +88,7 @@ const Navbar = () => {
           ) : (
             <>
               <Link
-                to={userinfo.role === "admin" ? "/admin/educator" : "/educator"}
+                to={userinfo.role === "instructor" ? "/instructor/educator" : "/educator"}
                 onClick={() => setMenuOpen(false)}
                 className="cursor-pointer"
               >

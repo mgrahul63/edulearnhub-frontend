@@ -59,9 +59,9 @@ const CourseCard = forwardRef(({ course, onEdit, purchased }, ref) => {
           to={`/instructor/${course?.instructorId}`}
           state={{ instructorId: course?.instructorId }}
         >
-          <p className="text-sm text-gray-700 mb-1">
+          <p className=" text-gray-700 mb-1">
             Instructor:{" "}
-            <span className="hover:text-red-400 hover:underline">
+            <span className="text-red-400 underline">
               {course?.instructorName}
             </span>
           </p>
@@ -80,7 +80,7 @@ const CourseCard = forwardRef(({ course, onEdit, purchased }, ref) => {
         </p>
 
         <p className="text-sm text-gray-500 mb-2 line-clamp-2">
-          {truncateWords(course?.description, 7)}
+          {truncateWords(course?.description, 10)}
         </p>
       </div>
       {/* Access & Edit Button */}
