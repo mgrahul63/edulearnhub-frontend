@@ -52,7 +52,7 @@ const BookForm = ({ setOpenBookForm, selectBook }) => {
       }
 
       if (method === "edit" && selectBook?.id) {
-        fd.append("bookId", selectBook._id);
+        fd.append("bookId", selectBook.id);
       }
 
       let res = null;
@@ -123,6 +123,7 @@ const BookForm = ({ setOpenBookForm, selectBook }) => {
           className="bg-gray-300"
           OnClick={() => !loading && setOpenBookForm(false)}
           type="button"
+          disabled={loading}
         />
       </div>
     </form>

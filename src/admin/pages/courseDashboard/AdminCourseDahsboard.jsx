@@ -13,7 +13,7 @@ const AdminCourseDashboard = () => {
   const { state } = useLocation();
   const course = state?.course;
 
-  const [selectBook, setSelectBook] = useState(null);
+  const [selectBook, setSelectBook] = useState({});
   const [isOpenBookForm, setOpenBookForm] = useState(false);
   const [isOpenChapter, setIsOpenChapter] = useState(false);
 
@@ -37,6 +37,7 @@ const AdminCourseDashboard = () => {
   };
 
   const handleEditBook = (book) => {
+    console.log(book);
     setSelectBook({ ...book, method: "edit" });
     setOpenBookForm(true);
     setIsOpenChapter(false);
@@ -102,7 +103,8 @@ const AdminCourseDashboard = () => {
               >
                 <div
                   className="relative"
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
                     handleOpenChapter(book);
                     const el = document.getElementById("myTargetDiv");
                     el?.scrollIntoView({ behavior: "smooth" });
@@ -122,13 +124,19 @@ const AdminCourseDashboard = () => {
 
                 <div className="flex justify-between items-center mt-2 px-2">
                   <button
-                    onClick={() => handleEditBook(book)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleEditBook(book);
+                    }}
                     className="text-sm cursor-pointer bg-blue-600 hover:bg-gray-500 px-3 py-1 rounded text-gray-50"
                   >
                     Edit
                   </button>
                   <button
-                    onClick={() => handleDeleteBook(book)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteBook(book);
+                    }}
                     className="text-sm cursor-pointer bg-red-600 hover:bg-gray-500 px-2 py-1 rounded text-gray-50"
                   >
                     Delete
@@ -156,15 +164,15 @@ const AdminCourseDashboard = () => {
             {selectBook ? (
               <p className="text-lg font-semibold text-gray-700 mb-4">
                 Chapters for:{" "}
-                <span className="text-blue-600">{selectBook.bookName}</span>
+                <span className="text-blue-600">{selectBook?.bookName}</span>
               </p>
             ) : (
               <p className="text-lg font-semibold text-gray-500 mb-4">
                 Please select a book to view chapters
               </p>
             )}
-            <ChapterTableList bookId={selectBook.id} />
-            <ChapterCreateForm bookId={selectBook.id} />
+            <ChapterTableList bookId={selectBook?.id} />
+            <ChapterCreateForm bookId={selectBook?.id} />
           </div>
         )}
       </div>

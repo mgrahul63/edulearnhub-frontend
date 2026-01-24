@@ -14,7 +14,7 @@ export const addBookAPI = async (fd) => {
 };
 export const updateBookAPI = async (fd) => {
   try {
-    const res = customaxios.put("api/admin/book", fd);
+    const res = await customaxios.put("api/admin/book", fd);
     return res.data;
   } catch (error) {
     console.error("Add chapter failed:", error);

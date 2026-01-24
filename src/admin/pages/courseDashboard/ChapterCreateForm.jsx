@@ -34,13 +34,11 @@ const ChapterCreateForm = ({ bookId }) => {
       bookId,
       method: "new",
     };
-
     try {
       if (loading) return;
       setLoading(true);
 
       const res = await chapterAPI(payload);
-
       if (!res?.success) {
         toast.error(res?.message || "Failed to add chapter");
         return;
