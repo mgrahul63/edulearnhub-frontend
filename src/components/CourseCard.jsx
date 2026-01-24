@@ -19,7 +19,7 @@ const CourseCard = forwardRef(({ course, onEdit, purchased }, ref) => {
 
   const buttonText = isEnrolled ? "Go to Course" : "Enroll Now";
   const buttonPath = isEnrolled
-    ? `/course/${courseId}`
+    ? `/educator/dashboard/${courseId}`
     : `/payments/${courseId}`;
 
   const queryClient = useQueryClient();
@@ -108,6 +108,13 @@ const CourseCard = forwardRef(({ course, onEdit, purchased }, ref) => {
         </div>
       ) : (
         <div className="mt-4 flex justify-between">
+          <Link
+            to={`dashboard/${courseId}`}
+            state={{ course }}
+            className="px-4 py-2 text-sm font-medium rounded-md border border-indigo-500 text-indigo-600 hover:bg-indigo-50 transition cursor-pointer"
+          >
+            Manage
+          </Link>
           <button
             onClick={() => onEdit()}
             className="px-4 py-2 text-sm font-medium rounded-md border border-indigo-500 text-indigo-600 hover:bg-indigo-50 transition cursor-pointer"

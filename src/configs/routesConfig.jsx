@@ -1,11 +1,13 @@
 import AdminCategory from "../admin/pages/category/AdminCategory";
 import AddCourseDetails from "../admin/pages/course/AddCourseDetails";
 import AddminCourse from "../admin/pages/course/AddminCourse";
+import AdminCourseDahsboard from "../admin/pages/courseDashboard/AdminCourseDahsboard";
 import Instructor from "../admin/pages/instructor/Instructor";
 import AdminUser from "../admin/pages/users/AdminUser";
 import AppLayout from "../components/AppLayout";
 import ViewCourseDetails from "../components/educator/ViewCourseDetails";
 import ErrorBoundary from "../components/ErrorBoundary";
+import CourseDashboard from "../pages/courseDashboard/CourseDashboard";
 import CourseDocs from "../pages/CourseDocs";
 import CourseQuiz from "../pages/CourseQuiz";
 import Dashboard from "../pages/educator/Dashboard";
@@ -49,6 +51,10 @@ export const routerConfig = [
                 errorElement: <ErrorBoundary />,
               },
               { path: "educator/:courseId", element: <ViewCourseDetails /> },
+              {
+                path: "educator/dashboard/:courseId",
+                element: <CourseDashboard />,
+              },
               { path: "my-courses", element: <MyCourses /> },
               { path: "course-list", element: <CoursesList /> },
               { path: "course-list/:keyword", element: <CoursesList /> },
@@ -79,6 +85,10 @@ export const routerConfig = [
               {
                 path: "instructor/courses/:courseId",
                 element: <AddCourseDetails />,
+              },
+              {
+                path: "instructor/courses/dashboard/:courseId",
+                element: <AdminCourseDahsboard />,
               },
 
               // admin routes
