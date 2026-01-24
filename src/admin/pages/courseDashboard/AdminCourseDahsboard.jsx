@@ -78,7 +78,7 @@ const AdminCourseDashboard = () => {
         </h6>
       )}
 
-      <div className="flex flex-row w-full gap-4">
+      <div className="md:flex md:flex-row w-full gap-4">
         {/* LEFT: BOOK LIST */}
         <div
           className={`${
@@ -102,7 +102,11 @@ const AdminCourseDashboard = () => {
               >
                 <div
                   className="relative"
-                  onClick={() => handleOpenChapter(book)}
+                  onClick={() => {
+                    handleOpenChapter(book);
+                    const el = document.getElementById("myTargetDiv");
+                    el?.scrollIntoView({ behavior: "smooth" });
+                  }}
                 >
                   <img
                     src={book.bookImage}
@@ -145,7 +149,10 @@ const AdminCourseDashboard = () => {
         )}
 
         {isOpenChapter && (
-          <div className="w-10/12 border border-gray-100 rounded p-4">
+          <div
+            id="myTargetDiv"
+            className="sm:w-full md:w-10/12 border border-gray-100 rounded p-4"
+          >
             {selectBook ? (
               <p className="text-lg font-semibold text-gray-700 mb-4">
                 Chapters for:{" "}

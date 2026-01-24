@@ -1,7 +1,9 @@
 import { Outlet } from "react-router-dom";
 import SideBar from "../../components/educator/SideBar";
+import { scrollToTop } from "../../utils/scrollToTop";
 
 const Educator = () => {
+  scrollToTop();
   return (
     <div className="block md:flex min-h-screen">
       {/* Sidebar: hidden on small, visible from md up */}

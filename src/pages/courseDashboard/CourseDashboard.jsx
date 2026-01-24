@@ -56,7 +56,14 @@ const CourseDashboard = () => {
                 key={book.id}
                 className="border border-gray-100 rounded overflow-hidden cursor-pointer hover:bg-gray-100 hover:shadow-lg transition w-full mb-2 p-2"
               >
-                <div className="relative" onClick={() => handleOpenBook(book)}>
+                <div
+                  className="relative"
+                  onClick={() => {
+                    handleOpenBook(book);
+                    const el = document.getElementById("myTargetDiv");
+                    el?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                >
                   <img
                     src={book?.bookImage}
                     alt={book?.bookName}
@@ -72,7 +79,10 @@ const CourseDashboard = () => {
             ))}
         </div>
         {isOpenChapter && (
-          <div className="w-10/12 border border-gray-100 rounded p-4">
+          <div
+            id="myTargetDiv"
+            className="sm:w-full md:w-10/12 border border-gray-100 rounded p-4"
+          >
             {selectBook ? (
               <p className="text-lg font-semibold text-gray-700 mb-4">
                 Chapters for:{" "}
