@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import ActionButton from "../../components/ActionButton";
 import ChapterList from "../../components/ChapterList";
 import { useApp } from "../../hooks/useApp";
@@ -16,9 +16,7 @@ const ChapterTableList = ({ bookId }) => {
   });
 
   const chapters = data?.success ? data.chapters : [];
-  const handleView = () => {
-    console.log("object");
-  };
+
   return (
     <div className="overflow-x-auto border rounded-lg">
       <table className="w-full text-center border-collapse text-xs sm:text-sm">
@@ -44,17 +42,28 @@ const ChapterTableList = ({ bookId }) => {
           )}
           {chapters.length > 0 &&
             chapters.map((ch, index) => (
-              <tr key={ch.id} className="hover:bg-gray-100 transition-colors">
+              <tr key={ch?.id} className="hover:bg-gray-100 transition-colors">
                 <ChapterList index={index} ch={ch} />
                 <td className="border border-gray-300 px-2 py-2 sm:px-4 sm:py-2 text-center space-x-1 sm:space-x-2">
-                  <ActionButton
-                    className={"border-green-600 text-black"}
-                    OnClick={handleView}
-                    text={"View"}
-                  />
+                  <Link
+                    to={`questions/${ch?.id}`}
+                    state={{ bookId, chapterId: ch?.id }}
+                  >
+                    <ActionButton
+                      className={"border-green-600 text-black"}
+                      text={"Questions"}
+                    />
+                  </Link>
+                  <Link to={`videos/${ch?.id}`}>
+                    <ActionButton
+                      className={"border-green-600 text-black"}
+                      text={"Videos"}
+                    />
+                  </Link>
                 </td>
               </tr>
             ))}
+
           {!isPending && chapters.length === 0 && (
             <tr className="hover:bg-gray-100 transition-colors text-center">
               <td

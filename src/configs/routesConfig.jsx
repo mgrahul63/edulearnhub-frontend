@@ -1,12 +1,16 @@
+import AdminBookPage from "../admin/pages/book-info/AdminBookPage";
 import AdminCategory from "../admin/pages/category/AdminCategory";
 import AddCourseDetails from "../admin/pages/course/AddCourseDetails";
 import AddminCourse from "../admin/pages/course/AddminCourse";
 import AdminCourseDahsboard from "../admin/pages/courseDashboard/AdminCourseDahsboard";
 import Instructor from "../admin/pages/instructor/Instructor";
+import AdminQuestionPage from "../admin/pages/questionPage/AdminQuestionPage";
 import AdminUser from "../admin/pages/users/AdminUser";
+import AdminVideoPage from "../admin/pages/videoPage/AdminVideoPage";
 import AppLayout from "../components/AppLayout";
 import ViewCourseDetails from "../components/educator/ViewCourseDetails";
 import ErrorBoundary from "../components/ErrorBoundary";
+import BookPage from "../pages/book-info/BookPage";
 import CourseDashboard from "../pages/courseDashboard/CourseDashboard";
 import CourseDocs from "../pages/CourseDocs";
 import CourseQuiz from "../pages/CourseQuiz";
@@ -15,7 +19,8 @@ import Educator from "../pages/educator/Educator";
 import MyCourses from "../pages/educator/MyCourses";
 import StudentsEnrolled from "../pages/educator/StudentsEnrolled";
 import Login from "../pages/login/Login";
-import Payments from "../pages/payments/Payments";
+import Payments from "../pages/payments/Payments"; 
+import QuestionPage from "../pages/questionPage/QuestionPage";
 import Signup from "../pages/register/Signup";
 import CourseDetails from "../pages/student/CourseDetails";
 import CoursesList from "../pages/student/CoursesList";
@@ -25,6 +30,7 @@ import MyEnrollments from "../pages/student/MyEnrollments";
 import PaymentCancel from "../pages/student/PaymentCancel";
 import PaymentSuccess from "../pages/student/PaymentSuccess";
 import Player from "../pages/student/Player";
+import VideoPage from "../pages/videoPage/VideoPage";
 import ProtectRoute from "../routes/ProtectRoute";
 
 export const routerConfig = [
@@ -50,10 +56,22 @@ export const routerConfig = [
                 element: <Dashboard />,
                 errorElement: <ErrorBoundary />,
               },
-              { path: "educator/:courseId", element: <ViewCourseDetails /> },
+              { path: "educator/:courseId", element: <ViewCourseDetails /> }, //here see list of course
               {
                 path: "educator/dashboard/:courseId",
-                element: <CourseDashboard />,
+                element: <CourseDashboard />, //here see list of books in sepecific course
+              },
+              {
+                path: "educator/dashboard/:courseId/:bookId",
+                element: <BookPage />, //here see a single book info when click
+              },
+              {
+                path: "educator/dashboard/:courseId/:bookId/questions/:chapterId",
+                element: <QuestionPage />,
+              },
+              {
+                path: "educator/dashboard/:courseId/:bookId/videos/:chapterId",
+                element: <VideoPage />,
               },
               { path: "my-courses", element: <MyCourses /> },
               { path: "course-list", element: <CoursesList /> },
@@ -84,11 +102,23 @@ export const routerConfig = [
               { path: "instructor/courses", element: <AddminCourse /> },
               {
                 path: "instructor/courses/:courseId",
-                element: <AddCourseDetails />,
+                element: <AddCourseDetails />, // here see list of course
               },
               {
                 path: "instructor/courses/dashboard/:courseId",
-                element: <AdminCourseDahsboard />,
+                element: <AdminCourseDahsboard />, // here see lsit books in a specific course
+              },
+              {
+                path: "instructor/courses/dashboard/:courseId/:bookId",
+                element: <AdminBookPage />,
+              },
+              {
+                path: "instructor/courses/dashboard/:courseId/:bookId/questions/:chapterId",
+                element: <AdminQuestionPage />,
+              },
+              {
+                path: "instructor/courses/dashboard/:courseId/:bookId/videos/:chapterId",
+                element: <AdminVideoPage />,
               },
 
               // admin routes

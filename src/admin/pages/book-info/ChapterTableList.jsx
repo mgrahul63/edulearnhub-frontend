@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import ActionButton from "../../../components/ActionButton";
 import ChapterList from "../../../components/ChapterList";
@@ -117,11 +117,11 @@ const ChapterTableList = ({ bookId }) => {
               </td>
             </tr>
           )}
-          {chapters.length > 0 &&
-            chapters.map((ch, index) => (
+          {chapters?.length > 0 &&
+            chapters?.map((ch, index) => (
               <tr
-                key={ch.id}
-                className="hover:bg-gray-100 transition-colors text-left"
+                key={ch?.id}
+                className="hover:bg-gray-100 transition-colors text-left w-full"
               >
                 <ChapterList
                   index={index}
@@ -131,17 +131,17 @@ const ChapterTableList = ({ bookId }) => {
                   editId={editId}
                 />
 
-                {editId === ch.id ? (
-                  <td className="border border-gray-300 px-4 py-2 space-x-2">
+                {editId === ch?.id ? (
+                  <td className="border border-gray-300 px-4 py-2 space-x-2 w-4/12">
                     <ActionButton
                       className={`border-green-600 text-black ${
-                        loadingId === ch.id &&
+                        loadingId === ch?.id &&
                         loadingAction === "save" &&
                         "bg-green-400 cursor-not-allowed"
                       }`}
                       OnClick={handleSave}
                       text={
-                        loadingId === ch.id && loadingAction === "save"
+                        loadingId === ch?.id && loadingAction === "save"
                           ? "Saving..."
                           : "Save"
                       }
@@ -149,13 +149,15 @@ const ChapterTableList = ({ bookId }) => {
                     />
                     <ActionButton
                       className={`border-gray-500 text-gray-900 ${
-                        loadingId === ch.id &&
+                        loadingId === ch?.id &&
                         loadingAction === "save" &&
                         "bg-gray-300 cursor-not-allowed"
                       }`}
                       OnClick={handleCancel}
                       text="Cancel"
-                      disabled={loadingId === ch.id && loadingAction === "save"}
+                      disabled={
+                        loadingId === ch?.id && loadingAction === "save"
+                      }
                     />
                   </td>
                 ) : (
@@ -163,12 +165,24 @@ const ChapterTableList = ({ bookId }) => {
                     <td className="border border-gray-300 text-center px-4 py-2 space-x-2">
                       {ch?.orderNo}
                     </td>
-                    <td className="border border-gray-300 px-4 py-2 space-x-2">
-                      <ActionButton
-                        className={"bg-blue-600 text-white"}
-                        OnClick={() => handleEdit(ch)}
-                        text={"Manage Questions"}
-                      />
+                    <td className="border border-gray-300 px-4 py-2 space-x-2 w-4/12">
+                      <Link
+                        to={`questions/${ch?.id}`}
+                        state={{ bookId, chapterId: ch?.id }}
+                      >
+                        <ActionButton
+                          className={"bg-blue-600 text-white"}
+                          OnClick={() => handleEdit(ch)}
+                          text={"Manage Questions"}
+                        />
+                      </Link>
+                      <Link to={`videos/${ch?.id}`}>
+                        <ActionButton
+                          className={"bg-green-600 text-white"}
+                          OnClick={() => handleEdit(ch)}
+                          text={"Manage Videos"}
+                        />
+                      </Link>
                       <ActionButton
                         className={"bg-blue-600 text-white"}
                         OnClick={() => handleEdit(ch)}

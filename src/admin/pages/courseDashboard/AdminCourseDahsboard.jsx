@@ -1,12 +1,10 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import ActionButton from "../../../components/ActionButton";
 import { delteBookAPI, getBookAPI } from "../../../services/api/chapter";
 import BookForm from "../../components/BookForm";
-import ChapterCreateForm from "./ChapterCreateForm";
-import ChapterTableList from "./ChapterTableList";
 
 const AdminCourseDashboard = () => {
   const { courseId } = useParams();
@@ -15,7 +13,6 @@ const AdminCourseDashboard = () => {
 
   const [selectBook, setSelectBook] = useState({});
   const [isOpenBookForm, setOpenBookForm] = useState(false);
-  const [isOpenChapter, setIsOpenChapter] = useState(false);
 
   const queryClient = useQueryClient();
   const { data, isLoading } = useQuery({
@@ -25,22 +22,13 @@ const AdminCourseDashboard = () => {
   });
 
   const handleOpenBook = () => {
-    setIsOpenChapter(false);
     setOpenBookForm(true);
     setSelectBook(null);
   };
 
-  const handleOpenChapter = (book) => {
-    setSelectBook(book);
-    setIsOpenChapter(true);
-    setOpenBookForm(false);
-  };
-
   const handleEditBook = (book) => {
-    console.log(book);
     setSelectBook({ ...book, method: "edit" });
     setOpenBookForm(true);
-    setIsOpenChapter(false);
   };
 
   const handleDeleteBook = async (book) => {
@@ -73,22 +61,21 @@ const AdminCourseDashboard = () => {
         />
       </div>
 
-      {!isOpenChapter && (
-        <h6 className="text-lg bg-green-400 text-center font-semibold py-2 rounded-t-md mb-2">
+      {!isOpenBookForm && (
+        <h6 className="text-lg bg-green-400 text-center font-semibold py-2 rounded-t-md">
           List of Books
         </h6>
       )}
-
       <div className="md:flex md:flex-row w-full gap-4">
         {/* LEFT: BOOK LIST */}
         <div
           className={`${
-            !isOpenBookForm && !isOpenChapter
+            !isOpenBookForm
               ? "w-full grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-2"
               : "sm:w-full md:w-2/12 md:flex flex-col border border-gray-100 rounded"
           }`}
         >
-          {isOpenChapter && (
+          {isOpenBookForm && (
             <h6 className="text-lg bg-green-400 text-center font-semibold py-2 rounded-t-md">
               List of Books
             </h6>
@@ -101,15 +88,7 @@ const AdminCourseDashboard = () => {
                 key={book.id}
                 className="border border-gray-100 rounded overflow-hidden cursor-pointer hover:bg-gray-100 hover:shadow-lg transition w-full mb-2 p-2"
               >
-                <div
-                  className="relative"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleOpenChapter(book);
-                    const el = document.getElementById("myTargetDiv");
-                    el?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                >
+                <Link to={`${book.id}`} state={{ book }} className="relative">
                   <img
                     src={book.bookImage}
                     alt={book.bookName}
@@ -120,7 +99,7 @@ const AdminCourseDashboard = () => {
                       {book.bookName}
                     </p>
                   </div>
-                </div>
+                </Link>
 
                 <div className="flex justify-between items-center mt-2 px-2">
                   <button
@@ -153,26 +132,6 @@ const AdminCourseDashboard = () => {
               setOpenBookForm={setOpenBookForm}
               selectBook={selectBook}
             />
-          </div>
-        )}
-
-        {isOpenChapter && (
-          <div
-            id="myTargetDiv"
-            className="sm:w-full md:w-10/12 border border-gray-100 rounded p-4"
-          >
-            {selectBook ? (
-              <p className="text-lg font-semibold text-gray-700 mb-4">
-                Chapters for:{" "}
-                <span className="text-blue-600">{selectBook?.bookName}</span>
-              </p>
-            ) : (
-              <p className="text-lg font-semibold text-gray-500 mb-4">
-                Please select a book to view chapters
-              </p>
-            )}
-            <ChapterTableList bookId={selectBook?.id} />
-            <ChapterCreateForm bookId={selectBook?.id} />
           </div>
         )}
       </div>
