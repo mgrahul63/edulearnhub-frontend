@@ -178,15 +178,15 @@ Password: 123456
 
 🔗 Live Project & Source Code
 
-🌐 Live Site: https://edulearnhub.vercel.app/
+🌐 Live Site: [https://edulearnhub.vercel.app/](https://edulearnhub.vercel.app/)
 
-💻 Client Repo: https://github.com/mgrahul63/edulearnhub-frontend
+💻 Client Repo: [https://github.com/mgrahul63/edulearnhub-frontend](https://github.com/mgrahul63/edulearnhub-frontend)
 
-🖥 Server Repo: https://github.com/mgrahul63/edulearnhub-backend
+🖥 Server Repo: [https://github.com/mgrahul63/edulearnhub-backend](https://github.com/mgrahul63/edulearnhub-backend)
 
 👨‍💻 Developed by
 
-MG Rahul 
+MG Rahul
 
 © All Rights Reserved
 
