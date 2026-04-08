@@ -1,165 +1,194 @@
-🌟 EduSphere – Online Learning & Resource Management 📌 Project Overview
+🌟 EduLearnHub – Online Learning & Resource Management  
+📌 Project Overview
 
-EduSphere is a modern full-stack web application designed for online education 🎯. Students can explore courses, watch videos, read PDFs, take quizzes, and track progress — all through a clean, responsive interface. Instructors can create and manage courses, upload content, and interact with students in real time.
+EduLearnHub is a modern full-stack web application designed for online education 🎯. Users can create accounts as **Students** or **Instructors**, explore courses, watch videos, read PDFs, take quizzes, and track progress. Instructors can create courses, upload materials, manage quizzes, and interact with students.  
 
-The platform integrates **React Hook Form** for efficient forms, **TanStack Query** for data handling, and **Stripe** (optional) for payments. It’s fully responsive and built with **React**, **Tailwind CSS**, and modern frontend tools for a seamless learning experience.
+The platform integrates **Firebase Authentication** (Email/Password + Google Sign-In), **JWT-based protected routes**, and uses **React Hook Form** & **TanStack Query** for efficient frontend data handling.  
 
-🚀 Core Features 👤 Student Features
+---
 
-🔍 Browse courses and modules
+🚀 Core Features  
+👤 Student Features
 
-🎞 Watch embedded YouTube videos
-
-📄 Read PDFs and course materials
-
-📝 Take quizzes and track progress
-
-⭐ Rate courses
-
-💬 Participate in discussions and comments
+🔍 Browse courses and learning materials  
+🎞 Watch embedded YouTube videos  
+📄 Read PDFs and course resources  
+📝 Take quizzes and track progress  
+⭐ Rate courses  
+💬 Comment and discuss course content  
 
 🧑‍🏫 Instructor Features
 
-🏷 Create and manage courses
-
-📂 Upload PDFs, videos, and quizzes
-
-👥 View enrolled students
-
-📊 Track student progress
+🏷 Create and manage courses  
+📂 Upload PDFs, videos, and quizzes  
+👥 View enrolled students  
+📊 Track student progress  
 
 ✨ Additional Features
 
-🔐 Firebase Authentication (Email/Password + Google Sign-In)
+🔐 Firebase Authentication (Email/Password + Google Sign-In)  
+🪪 JWT-based protected routes  
+🔎 Search, filter, and sort courses  
+📱 Fully responsive design (mobile, tablet, desktop)  
+🎞 Smooth animations using Framer Motion  
+⚡ Efficient data fetching with TanStack Query  
 
-🪪 JWT-based protected routes
+---
 
-🔎 Search, filter, and sort courses
+🛠 Technology Stack  
+🎨 Frontend
 
-📱 Fully responsive design (mobile, tablet, desktop)
+React.js  
+React Router  
+Tailwind CSS  
+React Hook Form  
+TanStack Query  
+Framer Motion  
+React Icons  
+React PDF  
+React YouTube  
+Quill Editor  
+UUID  
+React Simple Star Rating  
+React Toastify  
+RC Progress Bar  
+Humanize Duration  
 
-🎞 Smooth animations using Framer Motion
+⚙ Backend
 
-⚡ Efficient data fetching with TanStack Query
+Node.js  
+Express.js  
+MongoDB  
+Firebase Admin (JWT Verification)  
+Stripe API (optional)  
 
-🛠 Technology Stack 🎨 Frontend
+---
 
-- React.js
-- React Router
-- Tailwind CSS
-- DaisyUI (optional)
-- React Hook Form
-- TanStack Query
-- Framer Motion
-- React Icons
-- React PDF
-- React YouTube
-- Quill Editor
-- UUID
-- React Simple Star Rating
-- React Toastify
-
-⚙ Backend (Optional / Separate Repo)
-
-- Node.js
-- Express.js
-- MongoDB
-- Firebase Admin (JWT Verification)
-- Stripe API (optional)
-
-🗄 Database Design (Collections)
-
+🗄 Database Design (Collections)  
 👥 users
-- name, email, role (student | instructor | admin), createdAt
 
-📚 courses
-- courseName, description, category
-- bannerImage, instructorEmail (FK → users)
-- createdAt, updatedAt
+name, email, role (student | instructor | admin)  
+createdAt  
 
-📄 courseMaterials
-- courseId, title, type (pdf | video | quiz)
-- url / content
-- createdAt, updatedAt
+🏛 courses
+
+courseName, description, category, bannerImage, instructorEmail (FK → users)  
+createdAt, updatedAt  
+
+📂 courseMaterials
+
+courseId, title, type (pdf | video | quiz), url / content, createdAt, updatedAt  
 
 🤝 enrollments
-- userEmail, courseId
-- status (active | completed)
-- enrolledAt, completedAt
 
-💰 payments (optional)
-- userEmail, amount
-- courseId
-- stripePaymentIntentId / transactionId
-- status, createdAt
+userEmail, courseId, status (active | completed), enrolledAt, completedAt  
 
 📝 quizzes
-- courseId, title
-- questions (array of question objects)
-- createdAt
 
-🗂 quizResults
-- quizId, userEmail
-- answers, score
-- submittedAt
+courseId, title, questions (array), createdAt  
 
-🧭 Pages & Routing 🌐 Public Pages
+📊 quizResults
 
-/ – Home
+quizId, userEmail, answers, score, submittedAt  
 
-/courses – Courses Listing
+💰 payments (optional)
 
-/courses/:id – Course Details
+userEmail, amount, courseId, stripePaymentIntentId / transactionId, status, createdAt  
 
-/login – Login
+---
 
-/register – Register
+🧭 Pages & Routing  
+🌐 Public Pages
 
-Optional: /about, /pricing, /contact, 404
+/ – Home  
+/courses – Courses Listing  
+/courses/:id – Course Details  
+/login – Login  
+/register – Register (Student or Instructor)  
+
+Optional: /about, /pricing, /contact, 404  
 
 📊 Dashboard Pages (Role-Based)
 
-Admin: Overview, Users, Courses, Payments
+Admin: Overview, Users, Courses, Payments  
+Instructor: Overview, My Courses, Materials, Students  
+Student: Overview, My Courses, Progress, Quiz Results  
 
-Instructor: Overview, My Courses, Course Materials, Students
-
-Student: Overview, My Courses, Progress, Quiz Results
+---
 
 📚 Important NPM Packages
 
-- react, react-dom, react-router-dom
-- tailwindcss, @tailwindcss/cli, @tailwindcss/vite
-- react-hook-form
-- @tanstack/react-query
-- react-icons, lucide-react
-- react-pdf, react-youtube
-- quill
-- uuid
-- react-simple-star-rating
-- react-toastify
-- rc-progress
-- humanize-duration
-- framer-motion
+react, react-dom, react-router-dom, tailwindcss, @tailwindcss/cli, @tailwindcss/vite, react-hook-form, @tanstack/react-query, react-icons, lucide-react, react-pdf, react-youtube, quill, uuid, react-simple-star-rating, react-toastify, rc-progress, humanize-duration, framer-motion  
+
+---
 
 🌟 Key Highlights
 
-🔑 Role-based dashboards
+🔑 Role-based dashboards  
+🔐 Secure Firebase JWT authentication  
+🎞 Video and PDF content management  
+📝 Quizzes with scoring  
+🔍 Dynamic search, filter & sorting  
+🎨 Modern and responsive UI  
+✨ Smooth animations and enhanced UX  
 
-🔐 Secure Firebase JWT authentication
+---
 
-🎞 Video and PDF content management
+## How to Run the Project Locally (Step-by-Step)
 
-📝 Quizzes with scoring
-
-🔍 Dynamic search, filter & sorting
-
-🎨 Modern and responsive UI
-
-✨ Smooth animations and enhanced UX
-
-How to Run the Project Locally (Step-by-Step):
-
-1️⃣ Clone the Repository
+1️⃣ Clone the Repositories  
 
 ```bash
-git clone https://github.com/your-username/edu-frontend.git
+git clone https://github.com/mgrahul63/edulearnhub-frontend.git
+git clone https://github.com/mgrahul63/edulearnhub-backend.git
+
+2️⃣ Install Dependencies
+# Frontend
+cd edulearnhub-frontend
+npm install
+
+# Backend
+cd ../edulearnhub-backend
+npm install
+
+
+3️⃣ Environment Variables
+#Frontend
+VITE_API_URL=your_server_url
+VITE_FIREBASE_API_KEY=your_key
+VITE_STRIPE_PUBLISHABLE_KEY=your_key (optional)
+
+#Backend
+PORT=5000
+MONGO_URI=your_mongodb_uri
+STRIPE_SECRET_KEY=your_stripe_secret
+FB_SERVICE_KEY=your_firebase_service_key
+
+
+
+🧪 Demo User Accounts
+Student
+Email: mgrahul3@gmail.com
+Password: 123456
+
+Instructor
+Email: mgrahul00@gmail.com
+Password: 123456
+
+
+🔗 Live Project & Source Code
+
+🌐 Live Site: https://edulearnhub.vercel.app/
+
+💻 Client Repo: https://github.com/mgrahul63/edulearnhub-frontend
+
+🖥 Server Repo: https://github.com/mgrahul63/edulearnhub-backend
+
+👨‍💻 Developed by
+
+MG Rahul 
+
+© All Rights Reserved
+
+About
+EduLearnHub is a full-stack web application for online education with role-based dashboards, interactive course content, quizzes, and optional Stripe payments. Users can register as Students or Instructors to interact with the platform.
